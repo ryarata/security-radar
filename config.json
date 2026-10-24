@@ -4,7 +4,7 @@
   ],
   "model": "grok-4.7",
   "lookbackHours": 48,
-  "maxTurns": 4,
-  "maxOutputTokens": 6500,
+  "maxTurns": 2,
+  "maxOutputTokens": 4500,
   "monthlyRunLimit": 35
 }
