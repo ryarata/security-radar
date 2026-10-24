@@ -1,1 +1,6 @@
-{"state":"pending","message":"APIキー設定後に初回収集を実行します"}
+{
+  "attemptedAt": "2026-10-24T15:37:11.939Z",
+  "state": "ok",
+  "message": "3件を整理しました",
+  "lastSuccessAt": "2026-10-24T15:37:11.939Z"
+}
