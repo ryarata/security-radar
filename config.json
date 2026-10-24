@@ -1,0 +1,10 @@
+{
+  "handles": [
+    "k_koyanagi_null"
+  ],
+  "model": "grok-4.7",
+  "lookbackHours": 48,
+  "maxTurns": 4,
+  "maxOutputTokens": 6500,
+  "monthlyRunLimit": 35
+}
