@@ -1,11 +1,16 @@
 import {readFile,writeFile,mkdir} from 'node:fs/promises';
 import {createHash} from 'node:crypto';
+import {reportSchema} from './schema.mjs';
 const config=JSON.parse(await readFile('config.json','utf8'));
 const now=new Date(), month=now.toISOString().slice(0,7);
 const date=new Intl.DateTimeFormat('sv-SE',{timeZone:'Asia/Tokyo'}).format(now);
 const read=async(p,f)=>{try{return JSON.parse(await readFile(p,'utf8'))}catch(e){if(e.code==='ENOENT')return f;throw e}};
 await mkdir('docs/data/reports',{recursive:true});
 const ledger=await read('docs/data/usage.json',{}), used=ledger[month]||0;
+const priorStatus=await read('docs/data/status.json',{});
+if(process.env.GITHUB_EVENT_NAME==='schedule' && priorStatus.state==='ok' && priorStatus.lastSuccessAt && new Intl.DateTimeFormat('sv-SE',{timeZone:'Asia/Tokyo'}).format(new Date(priorStatus.lastSuccessAt))===date){
+ console.log('Today already collected successfully; skipping without API usage.');process.exit(0);
+}
 const status={attemptedAt:now.toISOString(),state:'running'};
 try {
  if(!process.env.XAI_API_KEY)throw new Error('XAI_API_KEY が未設定です');
@@ -22,7 +27,7 @@ try {
 前回と同じ内容はchangeを継続、修正版や悪用確認など新事実があれば更新、初出なら新規とします。
 出力はJSONオブジェクトのみ。スキーマ: {"summary":"本日の短い要約","coverage":{"x":"実際にXを検索できた範囲と限界","official":"公式情報を確認できた範囲と限界"},"items":[{"id":"CVE番号または安定した識別子","title":"件名","priority":"今日確認|利用確認|動向把握","change":"新規|更新|継続","tags":["Ruby"],"summary":"概要","reason":"重要な理由と悪用状況","affected":"影響バージョンと条件。不明なら不明","check":"利用有無や該当条件の具体的な確認方法","action":"修正バージョン、暫定対策、侵害確認の要否。不明なら不明","verification":"公式確認済み|未確認","sources":[{"title":"出典名","url":"https URL","kind":"公式|X|参考"}]}]}。
 ソースURLは検索で実際に得たURLだけを使用。個別の影響・修正情報を支える公式リンクを優先。該当なしの場合はitemsを空配列にし、検索範囲の限界を書いてください。`;
- const response=await fetch('https://api.x.ai/v1/responses',{method:'POST',headers:{Authorization:`Bearer ${process.env.XAI_API_KEY}`,'Content-Type':'application/json'},body:JSON.stringify({model:config.model,input:prompt,tools:[{type:'x_search',allowed_x_handles:config.handles,from_date:start.toISOString().slice(0,10),to_date:new Date(now.getTime()+86400000).toISOString().slice(0,10)},{type:'web_search'}],max_turns:config.maxTurns,max_output_tokens:config.maxOutputTokens,store:false}),signal:AbortSignal.timeout(480000)});
+ const response=await fetch('https://api.x.ai/v1/responses',{method:'POST',headers:{Authorization:`Bearer ${process.env.XAI_API_KEY}`,'Content-Type':'application/json'},body:JSON.stringify({model:config.model,input:prompt,text:{format:{type:'json_schema',name:'security_report',strict:true,schema:reportSchema}},tools:[{type:'x_search',allowed_x_handles:config.handles,from_date:start.toISOString().slice(0,10),to_date:new Date(now.getTime()+86400000).toISOString().slice(0,10)},{type:'web_search'}],max_turns:config.maxTurns,max_output_tokens:config.maxOutputTokens,store:false}),signal:AbortSignal.timeout(480000)});
  if(!response.ok)throw new Error(`xAI API HTTP ${response.status}。詳細はxAI Consoleで確認してください`);
  const raw=await response.json();
  if(raw.status&&raw.status!=='completed')throw new Error(`xAI応答が未完了です: ${raw.status}`);

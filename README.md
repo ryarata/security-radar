@@ -13,7 +13,8 @@ GitHub Actions → xAI Responses API（X Search + Web Search）→ 構造検証 
 - Repository Secret `XAI_API_KEY` にxAIのキーを登録。
 - PagesのSourceをGitHub Actionsに設定。
 - Actionsの **Daily security radar → Run workflow** で手動実行。
-- 定期実行はUTC 01:00 / JST 10:00。GitHub側の混雑で遅延する場合があります。
+- 定期実行はJST 10:07、10:37、11:07。同日に成功済みなら追加のAPI呼び出しをせず終了。GitHub側の混雑で遅延・未実行になる場合があり、10時の更新は保証されません。
+- JSON Schemaによる構造化出力で、タグ・出典などの必須項目をAPI側にも指定しています。
 - ローカル検証は `npm test`。収集は環境変数を設定して `npm run collect`。
 
 ## 費用保護

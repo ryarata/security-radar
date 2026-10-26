@@ -6,3 +6,4 @@ const report=()=>({summary:'test',coverage:{x:'searched',official:'searched'},it
 test('requires evidence for official verification',()=>{const r=report();r.items[0].verification='公式確認済み';assert.throws(()=>validateReport(r));});
 test('rejects executable source URLs',()=>{const r=report();r.items[0].sources[0].url='javascript:alert(1)';assert.throws(()=>validateReport(r));});
 test('accepts valid unconfirmed findings and empty results',()=>{assert.ok(validateReport(report()));const r=report();r.items=[];assert.ok(validateReport(r));});
+test('missing tags and sources fail with distinct actionable errors',()=>{const r=report();delete r.items[0].tags;assert.throws(()=>validateReport(r),/test: タグ/);r.items[0].tags=[];r.items[0].sources=[];assert.throws(()=>validateReport(r),/test: 出典/)});
