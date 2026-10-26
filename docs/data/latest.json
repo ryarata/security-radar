@@ -1,103 +1,103 @@
 {
-  "summary": "対象期間内にPHPコアの未認証RCE（CVE-2026-109618/CVE-2026-109619）に関するJPCERT/CC注意喚起と、関連する追加情報提供（CVE-2026-115560）、国内不正アクセス事案の注意喚起更新を確認した。利用環境への該当は未判定。影響なしとは断定しない。",
+  "summary": "指定アカウントから新規の脆弱性話題は確認できず。PHP2ShellはCISAが検知ルール追加と未パッチ時のオフライン化を示しており継続対応が必要。期間内の公式新規重大注意喚起は確認できなかった。",
   "coverage": {
-    "x": "指定アカウントが明示されていなかったためfrom:jpcert等のキーワード検索を実施。期間内の直接投稿はツールで十分取得できず、関連言及はWeb検索経由で確認した範囲に限る。",
-    "official": "JPCERT/CC注意喚起、PHP公式アーカイブ、GitHub Security Advisoryを確認。CISA KEVの最近追加は確認したが対象スタックの主要新規項目は限定的。全公式ソースの網羅はしていない。"
+    "x": "from:k_koyanagi_nullのLatestを1回検索（最大10件）。セキュリティの新規発表はなく、PHP脆弱性は引用内の既存言及のみ。他期間・他アカウントは未検索。",
+    "official": "Web検索とJPCERT注意喚起ページ・CISA PHPアラートの閲覧で照合。JPCERT一覧の最終は2026-10-23で、10-24以降の新規注意喚起は確認できず。CVE-2026-115560の一次ページは未閲覧のため詳細は未確認。網羅ではなく限定的。"
   },
   "items": [
     {
       "id": "CVE-2026-109618,CVE-2026-109619",
       "title": "PHPにおける未認証リモートコード実行の脆弱性（PHP2Shell）",
       "priority": "今日確認",
-      "change": "新規",
+      "change": "更新",
       "tags": [
         "PHP"
       ],
-      "summary": "PHPコアに未認証のリモートコード実行につながるメモリ破損の脆弱性が存在する。Webリクエストを処理するインストールが影響を受け、mod_phpではアプリケーションコード実行前に到達しうる。JPCERT/CCが2026-10-22に注意喚起を公開・更新した。",
-      "reason": "外部公開され認証不要で到達しうる重大なRCEであり、国内で広く利用される。第三者による攻撃試行の報告はあるが、PHP公式およびJPCERT/CCによる大規模な悪用成功の確認は本調査範囲では未確認。CISA KEVへの掲載も確認できず。",
-      "affected": "PHP 8.5.12未満の8.5系、8.4.27未満の8.4系、8.3.36未満の8.3系、8.2.35未満の8.2系。PHP 8.1以前は上流の通常更新対象外（一部ソースバックポートあり）。Webリクエストを処理するPHP-FPM、Apache mod_php、php-cgi、FrankenPHP、LiteSpeed等が対象。条件の詳細は公式アドバイザリ参照。ディストリビューション提供版も影響しうる。",
-      "check": "php -vまたはWeb上のphpinfo()でバージョンを確認する。Webサーバー/FPM設定でPHPがリクエストを処理しているか、外部から到達可能かを確認する。利用有無は環境台帳がないため未判定。",
-      "action": "PHP 8.5.12、8.4.27、8.3.36、8.2.35以降へ更新する。更新が完全な対策。緩和策（memory_limitやsession.upload_progress.enabled=0等）は経路限定で不完全。JPCERT/CCが示す痕跡（異常なPHPSESSID、不審なmultipartリクエスト、ワーカー異常終了等）を確認し、疑わしい場合はログ保全と調査を行う。痕跡がなくても侵害なしとは断定できない。",
+      "summary": "PHPコアの未認証RCE。Webリクエスト処理環境が影響を受け、mod_phpはアプリ実行前に到達しうる。CISAは2026-10-23改訂でSIGMA検知ルールを追加し、公表時点で成功した悪用は確認していないと記載。10-24の投稿で未更新・EOLはオフラインを再強調。",
+      "reason": "未認証・外部公開のWebでRCEに至りうるため優先度が高い。CISAは成功した悪用を公表時点で未確認としているが、放置リスクは大きい。悪用試行の有無は環境ごとに未判定。",
+      "affected": "修正版（8.5.12、8.4.27、8.3.36、8.2.35）より前の対応ブランチ、およびWebリクエストを処理するPHP。8.1以前は公式の修正版なし。製品組込みPHPも影響しうる。利用環境への該当は未判定。",
+      "check": "稼働中のPHPバージョンを確認する。JPCERTが示す異常なPHPSESSID、不審なmultipartとメモリ関連エラー、ワーカー異常終了をログで見る。単一の痕跡がないことだけで非侵害とは断定できない。",
+      "action": "修正版へ速やかに更新する。直ちに更新できない、またはサポート終了版の場合は、CISAの案内に沿い対象システムをオフラインにする検討を行う。侵害痕跡の調査と証拠保全を行う。WAFは限定的な緩和にとどまる。",
       "verification": "公式確認済み",
       "sources": [
         {
-          "title": "JPCERT/CC 注意喚起 JPCERT-AT-2026-0033",
+          "title": "Critical Vulnerabilities in PHP Require Immediate Patching | CISA",
+          "url": "https://www.cisa.gov/news-events/alerts/2026/10/21/critical-vulnerabilities-php-require-immediate-patching",
+          "kind": "公式"
+        },
+        {
+          "title": "PHPにおける複数の脆弱性（CVE-2026-109618、CVE-2026-109619）に関する注意喚起",
           "url": "https://www.jpcert.or.jp/at/2026/at260033.html",
           "kind": "公式"
         },
         {
-          "title": "PHP Security advisory 2026-10-21",
-          "url": "https://www.php.net/archive/2026.php#2026-10-21-5",
-          "kind": "公式"
-        },
-        {
-          "title": "GitHub GHSA-w8hw-w9fx-j79w",
-          "url": "https://github.com/php/php-src/security/advisories/GHSA-w8hw-w9fx-j79w",
-          "kind": "公式"
-        },
-        {
-          "title": "GitHub GHSA-6wmf-4rv5-p3rp",
-          "url": "https://github.com/php/php-src/security/advisories/GHSA-6wmf-4rv5-p3rp",
-          "kind": "公式"
+          "title": "CISAによるPHP2Shellアラート更新の投稿",
+          "url": "https://x.com/CISAgov/status/2113984287481716741",
+          "kind": "X"
         }
       ]
     },
     {
       "id": "CVE-2026-115560",
-      "title": "PHP session upload progressに関する追加のRCE可能性（情報提供）",
+      "title": "PHP session upload progressに関する追加のRCE可能性",
       "priority": "動向把握",
-      "change": "新規",
+      "change": "継続",
       "tags": [
         "PHP"
       ],
-      "summary": "2026-10-23、PHPがsession upload progressに関する情報提供を公表。特定の設定とアプリケーションコードの組み合わせでのみ発生しうるRCEで、10月21日の修正版では対応されない。通常のバグフィックスリリースで対応予定。",
-      "reason": "公式が現実の発生は低い（unlikely）と評価。悪用状況は未確認。既に推奨緩和策を適用済みなら追加対応は不要とされる。外部公開・認証要否は条件次第。",
-      "affected": "session.serialize_handlerを設定でphp_binaryまたはphp_serializeにし、ランタイムでini_setによりphpへ切り替え、かつsession.upload_progress.enabledが有効な場合に限る。ランタイムでシリアライザを変更しないアプリケーションは対象外。バージョン範囲の詳細は次回正式アドバイザリ待ちで現時点不明。",
-      "check": "php.iniやFPMプール設定でsession.serialize_handlerとsession.upload_progress.enabledを確認する。アプリケーションコードでsession_start前にini_setによるシリアライザ変更がないか確認する。該当有無は未判定。",
-      "action": "次回リリースまでsession.upload_progress.enabled=0を管理設定で無効化し、全ワーカーを再起動する。10月21日の緩和策ですでに無効化済みなら追加不要。完全な修正版は未提供。",
-      "verification": "公式確認済み",
+      "summary": "前回記載の情報提供の継続。特定の設定とアプリケーションコードの組み合わせでのみ生じうるRCEで、10月21日の修正版では未対応。通常のバグフィックスリリースで対応予定との情報。期間内の公式更新は今回未確認。",
+      "reason": "条件が限定的とされ緊急修正の対象外だが、該当設定のPHPでは残存しうる。悪用状況は未確認。",
+      "affected": "不明。特定のsession設定と実行時のserialize_handler切替、およびupload progress有効の組合せとされるが、一次情報の全文は未確認。利用環境への該当は未判定。",
+      "check": "session.upload_progressとsession.serialize_handlerの設定、実行時ini_setの有無を確認する。公式の情報提供ページを直接確認する。",
+      "action": "緩和としてupload progress無効化が案内されているとの二次情報があるが、適用可否は公式で確認する。通常リリースを待つ。詳細は不明。",
+      "verification": "未確認",
       "sources": [
         {
-          "title": "PHP Informational advisory 2026-10-23",
-          "url": "https://www.php.net/archive/2026.php#2026-10-23-1",
-          "kind": "公式"
+          "title": "CERT-EU Security Advisory 2026-018",
+          "url": "https://cert.europa.eu/publications/security-advisories/2026-018/pdf",
+          "kind": "参考"
         }
       ]
     },
     {
       "id": "JPCERT-AT-2026-0030",
-      "title": "直近で相次いでいる国内組織における不正アクセスに関する注意喚起（2026-10-23更新）",
-      "priority": "今日確認",
-      "change": "新規",
+      "title": "直近で相次いでいる国内組織における不正アクセスに関する注意喚起",
+      "priority": "動向把握",
+      "change": "継続",
       "tags": [
         "Web",
-        "認証"
+        "インシデント"
       ],
-      "summary": "2026年9月前後から国内組織で不正アクセスによる個人情報等の漏えいが相次いでいる。2026-10-23の更新で、AIを用いたペネトレーションテスト基盤の悪用試行やAPI経由攻撃の送信元情報等が追加された。既知脆弱性の探索、管理APIの不正操作、Webシェル設置などのケースが整理されている。",
-      "reason": "国内で被害が継続・拡大しており、外部公開のWebシステムや管理APIを持つ組織に関連する。複数ケースで悪用が確認されていると公式が記載。特定CVEに閉じないため優先度は悪用状況と公開面を考慮。CISA期限は一般企業の義務ではない。",
-      "affected": "特定バージョンに限定されない。外部から到達可能なWebアプリケーション、管理用API、社内向けシステム等が対象となりうる。個別の影響条件は事案により異なり、全体像は限定的と公式が述べている。該当有無は未判定。",
-      "check": "公式ページのケース別痕跡（不審な送信元IP、User-Agent、Webシェル、設定ファイル取得等）をログと突合する。公開APIの認証・認可、既知脆弱性の適用状況を点検する。環境ごとの該当は未判定。",
-      "action": "公式注意喚起の点検・対策を参照し、既知脆弱性の修正、APIアクセス制御の見直し、ログ監視を行う。侵害が疑われる場合は証拠保全と影響調査を実施する。影響なしとは断定しない。",
+      "summary": "2026-10-23更新の注意喚起の継続。国内組織での不正アクセスと情報漏えいが相次ぎ、既知脆弱性の探索、管理API操作、Webシェル等のケースが整理されている。期間内のさらなる更新は確認できなかった。",
+      "reason": "国内のWeb関連インシデントが継続して注意喚起されている。個別の悪用成否や自組織該当は未判定。",
+      "affected": "特定製品バージョンは注意喚起本文による。管理APIや公開Webが対象になりうる。利用環境への該当は未判定。",
+      "check": "公開Web、管理API、認証まわりのアクセスログと不審なファイル・プロセスを確認する。注意喚起の最新版を直接読む。",
+      "action": "既知脆弱性の修正、不要な管理機能の露出削減、ログ監視を継続する。侵害が疑われる場合は証拠保全と隔離を検討する。詳細な追加対策は最新の注意喚起で確認。",
       "verification": "公式確認済み",
       "sources": [
         {
-          "title": "JPCERT/CC 注意喚起 JPCERT-AT-2026-0030",
+          "title": "注意喚起一覧",
+          "url": "https://www.jpcert.or.jp/at/2026.html",
+          "kind": "公式"
+        },
+        {
+          "title": "直近で相次いでいる国内組織における不正アクセスに関する注意喚起",
           "url": "https://www.jpcert.or.jp/at/2026/at260030.html",
           "kind": "公式"
         }
       ]
     }
   ],
-  "date": "2026-10-25",
-  "generatedAt": "2026-10-24T15:37:11.939Z",
+  "date": "2026-10-26",
+  "generatedAt": "2026-10-26T04:03:14.362Z",
   "model": "grok-4.7",
   "usage": {
-    "inputTokens": 270869,
-    "outputTokens": 8045,
+    "inputTokens": 99685,
+    "outputTokens": 8570,
     "tools": {
-      "web_search_calls": 15,
-      "x_search_calls": 2,
-      "x_posts_fetched": 1,
+      "web_search_calls": 6,
+      "x_search_calls": 1,
+      "x_posts_fetched": 10,
       "x_users_fetched": 0,
       "code_interpreter_calls": 0,
       "file_search_calls": 0,
@@ -106,5 +106,5 @@
       "image_generation_calls": 0
     }
   },
-  "fingerprint": "d10a1aababdcaab4fac6ff4da0e2441e0e0583ad8ee8118ee5703d48960efede"
+  "fingerprint": "1ddb1574e4c76c39f4522f6e7d367358a6088b4c5f3d844c9e9323ab84d6adb4"
 }
