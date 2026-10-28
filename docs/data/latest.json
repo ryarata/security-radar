@@ -1,43 +1,38 @@
 {
-  "summary": "期間内の主な変化はPHP2ShellのCISA KEV追加と、JPCERT・IPAの追記。session upload progressは緩和策の再案内。国内不正アクセス注意喚起の追加更新は確認できず。",
+  "summary": "PHP2Shell（CVE-2026-109618/109619）はCISA・JPCERTとも最終更新が10月26日、IPAは10月27日のまま追加更新を確認できず、悪用試行の報告は継続。期間内の新規重大注意は確認範囲では見当たらない。",
   "coverage": {
-    "x": "from:k_koyanagi_null のLatestを1回、最大10件検索。期間内はGMOや電源断・RDPに関する短評が中心で、対象製品の新規アドバイザリは見当たらなかった。スレッド取得や他アカウント検索は未実施。",
-    "official": "CISA・IPA・JPCERTのPHP関連を確認し、公式ページを3件開いた。JPCERT更新一覧に10-26のBrotli注意喚起の掲載は見たが本文は未確認。Ruby/Node/WordPress等の期間内公式更新は今回の検索では確認しきれず未確認。"
+    "x": "from:k_koyanagi_nullのLatest最大10件を検索。2026-10-28の投稿が中心で、PHP関連はphpinfo公開への言及と攻撃試行監視の引用が1件。他は非セキュリティ。期間全体の網羅やスレッド深掘りは未実施。",
+    "official": "CISAアラート、JPCERT-AT-2026-0033、JPCERT週報2026-10-28を開いて確認。IPAの重要情報一覧ではPHP注意の最終が10月27日。Ruby/npm/PyPI等やAT-2026-0030本文の再確認、10月28日以降の新規KEVは未実施。"
   },
   "items": [
     {
       "id": "CVE-2026-109618,CVE-2026-109619",
       "title": "PHPにおける未認証リモートコード実行の脆弱性（PHP2Shell）",
       "priority": "今日確認",
-      "change": "更新",
+      "change": "継続",
       "tags": [
         "PHP"
       ],
-      "summary": "Webリクエスト処理の未認証RCE。10月26日にCISAがKEVへ追加し、同日JPCERTが実証コード公開と悪用試行通信の報告を追記。IPAは10月27日にKEV掲載を追記し、国内被害事例は把握していないとした。",
-      "reason": "外部公開のWeb処理で認証なしに到達しうる。KEV追加は悪用根拠あり。JPCERTは実害のあるコード実行が環境依存と記載。CISA期限は連邦機関向けで一般企業の義務ではない。",
-      "affected": "PHP 8.2.35、8.3.36、8.4.27、8.5.12より前の各系。8.1以前は修正版なし。mod_php等のWebリクエスト処理が対象。自環境の該当は未判定。",
-      "check": "php -v、OSやホスティングのPHP版、Web公開の有無を確認。異常なPHPSESSID、不審なmultipartと500やメモリエラー、ワーカー異常終了も見る。痕跡なしでも未侵害とは断定できない。",
-      "action": "修正版へ更新。不可なら開発元の緩和策を検討し、EOLはオフラインまたは移行を検討。侵害疑い時は証拠保全と隔離。具体的な侵害有無は未判定。",
+      "summary": "Webリクエスト処理の未認証RCE。CISAは10月26日にKEV追加（連邦期限10月29日）、JPCERTは同日追記のまま。IPA最終更新は10月27日で、それ以降の公式更新は確認できず。",
+      "reason": "認証不要で外部からRCE可能。悪用試行通信と多数の実証コードの報告が継続。CISAは悪用証拠ありとしてKEV掲載。ランサム利用はUnknown。CISA期限は連邦機関向けであり一般企業の義務ではない。",
+      "affected": "PHP 8.5.12未満の8.5系、8.4.27未満の8.4系、8.3.36未満の8.3系、8.2.35未満の8.2系。8.1以前は修正版なし。Webリクエストを処理する構成（mod_phpが最高リスクとされる）。製品同梱・ディストリ提供PHPも含みうる。",
+      "check": "php -vやパッケージでバージョンを確認し、インターネットから到達するPHPの有無を棚卸しする。同梱PHPは提供元情報も確認。",
+      "action": "修正版へ更新し全ワーカーを再起動。直ちに更新できない場合は公開停止を検討。更新前にログを保全し、異常なPHPSESSID、不審なmultipart後のメモリエラーやHTTP 500、ワーカー異常終了を確認。痕跡がなくても侵害なしと断定しない。",
       "verification": "公式確認済み",
       "sources": [
         {
-          "title": "CISA Adds Two Known Exploited Vulnerabilities to Catalog",
-          "url": "https://www.cisa.gov/news-events/alerts/2026/10/26/cisa-adds-two-known-exploited-vulnerabilities-catalog",
-          "kind": "公式"
-        },
-        {
-          "title": "Critical Vulnerabilities in PHP Require Immediate Patching",
+          "title": "CISA Alert: Critical Vulnerabilities in PHP Require Immediate Patching",
           "url": "https://www.cisa.gov/news-events/alerts/2026/10/21/critical-vulnerabilities-php-require-immediate-patching",
           "kind": "公式"
         },
         {
-          "title": "IPA PHPの脆弱性対策について（PHP2shell）",
-          "url": "https://www.ipa.go.jp/security/security-alert/2026/alert20261022.html",
+          "title": "JPCERT/CC 注意喚起 JPCERT-AT-2026-0033",
+          "url": "https://www.jpcert.or.jp/at/2026/at260033.html",
           "kind": "公式"
         },
         {
-          "title": "JPCERT-AT-2026-0033",
-          "url": "https://www.jpcert.or.jp/at/2026/at260033.html",
+          "title": "IPA PHPの脆弱性対策について",
+          "url": "https://www.ipa.go.jp/security/security-alert/2026/alert20261022.html",
           "kind": "公式"
         }
       ]
@@ -46,24 +41,24 @@
       "id": "CVE-2026-115560",
       "title": "PHP session upload progressに関する追加のRCE可能性",
       "priority": "利用確認",
-      "change": "更新",
+      "change": "継続",
       "tags": [
         "PHP"
       ],
-      "summary": "特定の設定とアプリケーションコードの組み合わせでのみ生じうるRCE。JPCERTの10月26日追記では、PHP Groupが10月23日に公表し、通常リリースで修正予定、それまで設定変更を推奨とされた。",
-      "reason": "開発者は影響構成が一般的でないとしている。KEV掲載は今回未確認。PHP2Shell向け緩和と同じ設定が案内されている。",
-      "affected": "session upload progressが有効で、特定のアプリコードと組み合わさる場合。対象バージョンの詳細は今回未確認。利用有無は未判定。",
-      "check": "session.upload_progress.enabled の値と、アップロード進捗を使うコードの有無を確認する。",
-      "action": "有効なら0にして全ワーカーを再起動。既に同設定なら追加対応は不要との案内。修正版の具体バージョンは未確認。",
+      "summary": "特定の設定とアプリケーションコードの組み合わせでのみ生じうるとされるRCE。JPCERT注意喚起の10月26日追記以降、追加更新は確認できず。",
+      "reason": "条件付きのRCE。開発者は影響構成が一般的でないとし、通常リリースで修正予定。本調査範囲では悪用確認の公式記載は見当たらない。",
+      "affected": "session upload progressを使う特定設定とアプリコードの組み合わせ。一般的ではないとされる。正確な条件は不明。",
+      "check": "session.upload_progress.enabledの設定と、該当するアップロード処理の有無を確認する。",
+      "action": "修正版が出るまでsession.upload_progress.enabled=0にし、全ワーカーを再起動。CVE-2026-109619向けに既に無効なら追加対応は不要とされる。",
       "verification": "公式確認済み",
       "sources": [
         {
-          "title": "JPCERT-AT-2026-0033",
+          "title": "JPCERT/CC 注意喚起 JPCERT-AT-2026-0033",
           "url": "https://www.jpcert.or.jp/at/2026/at260033.html",
           "kind": "公式"
         },
         {
-          "title": "PHP Informational advisory: Session upload progress",
+          "title": "PHP informational advisory: Session upload progress",
           "url": "https://www.php.net/archive/2026.php#2026-10-23-1",
           "kind": "公式"
         }
@@ -75,32 +70,31 @@
       "priority": "動向把握",
       "change": "継続",
       "tags": [
-        "Web",
         "認証"
       ],
-      "summary": "2026-10-23更新の注意喚起の継続。JPCERT更新一覧の確認範囲では、10月25日以降のさらなる更新は見当たらなかった。本文の再確認は未実施。",
-      "reason": "既知脆弱性の探索、管理API操作、Webシェル等の整理が引き続き参照価値あり。期間内の新事実は未確認。",
-      "affected": "国内組織のWebサービスや管理APIが想定される。個別環境の該当は未判定。影響なしとは断定しない。",
-      "check": "公開管理画面、未修正の既知脆弱性、不審なAPI操作やWebシェルの有無を自組織で確認する。",
-      "action": "既存の注意喚起に沿い、修正、認証強化、ログ確認を継続。期間内の追加公式更新は未確認。",
+      "summary": "2026-10-23更新の注意喚起の継続。今回の検索と週報の範囲では10月26日以降のさらなる更新は見当たらなかった。本文の再確認は未実施。",
+      "reason": "国内の不正アクセス事案への継続注意。期間内の新たな被害確認や更新内容は未確認。",
+      "affected": "不明。注意喚起本文を未再読のため対象条件は不明。",
+      "check": "公式ページを直接開き、自組織の認証・公開API・アクセスログに該当しうる痕跡がないか確認する。",
+      "action": "注意喚起の推奨事項に従い調査。具体的な修正版や暫定策の有無は未確認。",
       "verification": "未確認",
       "sources": [
         {
-          "title": "JPCERT/CCからのお知らせ",
-          "url": "https://www.jpcert.or.jp/update/2026.html",
+          "title": "JPCERT/CC 注意喚起 JPCERT-AT-2026-0030",
+          "url": "https://www.jpcert.or.jp/at/2026/at260030.html",
           "kind": "公式"
         }
       ]
     }
   ],
-  "date": "2026-10-27",
-  "generatedAt": "2026-10-27T06:12:45.735Z",
+  "date": "2026-10-28",
+  "generatedAt": "2026-10-28T06:48:55.823Z",
   "model": "grok-4.7",
   "usage": {
-    "inputTokens": 64759,
-    "outputTokens": 6668,
+    "inputTokens": 109464,
+    "outputTokens": 8576,
     "tools": {
-      "web_search_calls": 5,
+      "web_search_calls": 6,
       "x_search_calls": 1,
       "x_posts_fetched": 10,
       "x_users_fetched": 0,
@@ -111,5 +105,5 @@
       "image_generation_calls": 0
     }
   },
-  "fingerprint": "447328a3691b56fca72652b5f8c66d484a3ef5dfc7f398d2fb758ee66cf4801d"
+  "fingerprint": "74f39cd57b4b8dd65fbe02c472a39c5e72d2bfc6626e8663425a66eb054ece2c"
 }
