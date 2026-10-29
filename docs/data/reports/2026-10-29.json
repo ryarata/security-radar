@@ -1,0 +1,141 @@
+{
+  "summary": "指定アカウントの直近投稿に新たなCVEはなく、PHP2Shell関連は期間内の公式追加更新を確認できず継続。JPCERT一覧の最終更新は2026-10-26で、同日公開のBrotli注意喚起本文は未確認。",
+  "coverage": {
+    "x": "from:k_koyanagi_null のLatestを1回、10件。取得分は2026-10-29 06:20–06:53 UTC付近の返信が中心で、CVEや公式アドバイザリの共有はなかった。10月27日まで遡る網羅検索は未実施。",
+    "official": "Web検索1回と、IPAのPHP注意喚起、JPCERT注意喚起一覧、JPCERTのPHP注意喚起の3ページを確認。CISAカタログ、PHP.net本文、Brotli本文、不正アクセス注意喚起本文は未オープン。JVNの10月28日更新という二次情報は未確認。"
+  },
+  "items": [
+    {
+      "id": "CVE-2026-109618,CVE-2026-109619",
+      "title": "PHPにおける未認証リモートコード実行の脆弱性（PHP2Shell）",
+      "priority": "今日確認",
+      "change": "継続",
+      "tags": [
+        "PHP"
+      ],
+      "summary": "Webリクエスト処理に関する未認証RCE。IPAの最終更新は2026-10-27のKEV追記のままで、JPCERT注意喚起の最終更新は2026-10-26。期間内の追加更新は確認できず。",
+      "reason": "外部公開されたPHPで認証なしにコード実行され得る。悪用試行の観測と実証コード公開はJPCERTの10月26日追記の範囲。IPAは国内被害を把握していないと記載。CISAの連邦期限は今回未確認で、一般企業の義務ではない。",
+      "affected": "PHP 8.2.35、8.3.36、8.4.27、8.5.12より前の各系。8.1以前は修正版なし。組込み製品は提供元依存。利用環境への該当は未判定。",
+      "check": "php -vまたは配布パッケージの版、mod_php・PHP-FPM・php-cgi等の公開有無を確認する。製品組込みは提供元情報も見る。",
+      "action": "修正版へ更新する。困難なら開発元の緩和策と外部公開の制限を検討し、異常Cookie、不審なmultipart、ワーカー異常終了などの侵害確認を続ける。痕跡なしでも侵害なしと断定しない。",
+      "verification": "公式確認済み",
+      "sources": [
+        {
+          "title": "IPA PHPの脆弱性対策について（CVE-2026-109618、CVE-2026-109619）",
+          "url": "https://www.ipa.go.jp/security/security-alert/2026/alert20261022.html",
+          "kind": "公式"
+        },
+        {
+          "title": "JPCERT-AT-2026-0033",
+          "url": "https://www.jpcert.or.jp/at/2026/at260033.html",
+          "kind": "公式"
+        },
+        {
+          "title": "The PHP Group Security advisory",
+          "url": "https://www.php.net/archive/2026.php#2026-10-21-5",
+          "kind": "公式"
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-115560",
+      "title": "PHP session upload progressに関する追加のRCE可能性",
+      "priority": "利用確認",
+      "change": "継続",
+      "tags": [
+        "PHP"
+      ],
+      "summary": "特定の設定とアプリケーションコードの組み合わせでのみ生じうるとされるRCE。JPCERTの2026-10-26追記以降、公式の追加更新は確認できず。",
+      "reason": "開発元は影響構成が一般的でないとして通常のリリースサイクルで修正する方針。期間内の悪用確認や修正版公開は未確認。",
+      "affected": "詳細バージョンは不明。session upload progressとアプリ実装が重なる場合。該当は未判定。",
+      "check": "session.upload_progress.enabledと、アップロード進捗を使う実装の有無を確認する。",
+      "action": "session.upload_progress.enabled=0にして全ワーカーを再起動する。CVE-2026-109619向けに適用済みなら追加不要とされる。修正版の提供状況は不明。",
+      "verification": "公式確認済み",
+      "sources": [
+        {
+          "title": "JPCERT-AT-2026-0033（CVE-2026-115560追記）",
+          "url": "https://www.jpcert.or.jp/at/2026/at260033.html",
+          "kind": "公式"
+        },
+        {
+          "title": "The PHP Group Informational advisory: Session upload progress",
+          "url": "https://www.php.net/archive/2026.php#2026-10-23-1",
+          "kind": "公式"
+        }
+      ]
+    },
+    {
+      "id": "JPCERT-AT-2026-0030",
+      "title": "直近で相次いでいる国内組織における不正アクセスに関する注意喚起",
+      "priority": "動向把握",
+      "change": "継続",
+      "tags": [
+        "認証"
+      ],
+      "summary": "注意喚起一覧では2026-10-23更新のまま。一覧の最終更新は2026-10-26で、それ以降の更新行はない。本文は今回未確認。",
+      "reason": "国内組織への不正アクセスに関する継続案件。期間内の新たな公式更新は確認できず、影響範囲や手法の再確認は未実施。",
+      "affected": "不明。本文未確認のため対象条件は不明。利用環境への該当は未判定。",
+      "check": "JPCERT注意喚起一覧の更新日を確認する。本文の再読と自組織ログの突合は未実施。",
+      "action": "不明。本文を開いていないため具体的な対策は断定しない。",
+      "verification": "公式確認済み",
+      "sources": [
+        {
+          "title": "JPCERT/CC 注意喚起一覧",
+          "url": "https://www.jpcert.or.jp/at/2026.html",
+          "kind": "公式"
+        },
+        {
+          "title": "JPCERT-AT-2026-0030",
+          "url": "https://www.jpcert.or.jp/at/2026/at260030.html",
+          "kind": "公式"
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-111497",
+      "title": "BrotliのC言語実装における境界外書き込みの脆弱性",
+      "priority": "動向把握",
+      "change": "新規",
+      "tags": [
+        "Webサーバー"
+      ],
+      "summary": "JPCERT注意喚起一覧に2026-10-26公開として掲載。期間前の公開であり、期間内更新ではない。本文は未確認。",
+      "reason": "前回項目になく、Webサーバー等で使われ得る圧縮実装の注意喚起として補完。悪用状況、影響版、修正版は本文未確認のため不明。",
+      "affected": "不明。本文未確認。利用環境への該当は未判定。",
+      "check": "注意喚起本文と、BrotliのC実装を含むWebサーバーやライブラリの提供元情報を確認する。今回本文は未確認。",
+      "action": "不明。本文未確認のため修正版や暫定対策は断定しない。",
+      "verification": "未確認",
+      "sources": [
+        {
+          "title": "JPCERT/CC 注意喚起一覧（CVE-2026-111497の掲載）",
+          "url": "https://www.jpcert.or.jp/at/2026.html",
+          "kind": "公式"
+        },
+        {
+          "title": "Brotli注意喚起（本文未確認）",
+          "url": "https://www.jpcert.or.jp/at/2026/at260034.html",
+          "kind": "公式"
+        }
+      ]
+    }
+  ],
+  "date": "2026-10-29",
+  "generatedAt": "2026-10-29T06:59:05.810Z",
+  "model": "grok-4.7",
+  "usage": {
+    "inputTokens": 42285,
+    "outputTokens": 8027,
+    "tools": {
+      "web_search_calls": 4,
+      "x_search_calls": 1,
+      "x_posts_fetched": 10,
+      "x_users_fetched": 0,
+      "code_interpreter_calls": 0,
+      "file_search_calls": 0,
+      "mcp_calls": 0,
+      "document_search_calls": 0,
+      "image_generation_calls": 0
+    }
+  },
+  "fingerprint": "64c4f515cbb68e17face51725d611da35b4a0a0a3dae5d51a3bb857e7e68b6ee"
+}
