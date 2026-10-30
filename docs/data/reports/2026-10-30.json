@@ -1,0 +1,153 @@
+{
+  "summary": "JPCERTが2026-10-29にPHP2Shell注意喚起を更新し、特定ファイアウォールでの侵害痕跡報告を追記した。CISAは同日GitLabとCiscoの2件をKEVに追加。指定アカウントの直近投稿に対象技術の脆弱性話題はなかった。",
+  "coverage": {
+    "x": "from:k_koyanagi_nullのLatest 10件を検索。いずれも2026-10-30で、脆弱性や対象技術の注意喚起は含まれない。期間内の全投稿は未取得。",
+    "official": "JPCERT注意喚起一覧とPHP注意喚起本文、CISAの2026-10-29 KEV追加を確認。IPAのPHPページは検索上2026-10-27最終更新。GitLab・Ciscoの影響版と修正版、Brotli本文、不正アクセス注意喚起本文は未確認。"
+  },
+  "items": [
+    {
+      "id": "CVE-2026-109618,CVE-2026-109619",
+      "title": "PHPにおける未認証リモートコード実行の脆弱性（PHP2Shell）",
+      "priority": "今日確認",
+      "change": "更新",
+      "tags": [
+        "PHP"
+      ],
+      "summary": "Webリクエスト処理に関する未認証RCE。JPCERT注意喚起は2026-10-29に更新され、特定ファイアウォール製品での侵害痕跡、Linuxカーネル権限昇格との組み合わせ、横展開の試みが報告された旨を追記。",
+      "reason": "未認証で遠隔からコード実行されうる。悪用を試みる通信や実証コードの報告が継続し、2026-10-29に製品侵害の報告が公式追記された。CISA KEV掲載は期間前。連邦向け期限を一般企業の義務としない。",
+      "affected": "PHP 8.5.12未満の8.5系、8.4.27未満の8.4系、8.3.36未満の8.3系、8.2.35未満の8.2系。8.1以前は修正版なし。組み込み製品も影響しうる。利用環境への該当は未判定。",
+      "check": "php -v、アプリやOS、製品に同梱されたPHPの版、外部公開のWebリクエスト処理有無を確認する。",
+      "action": "修正版へ更新する。即時更新できない場合は開発元の緩和策を確認し、異常なPHPSESSID、不審なmultipart、ワーカー異常終了などを調べる。痕跡がなくても侵害なしと断定しない。",
+      "verification": "公式確認済み",
+      "sources": [
+        {
+          "title": "JPCERT/CC PHP注意喚起（2026-10-29更新）",
+          "url": "https://www.jpcert.or.jp/at/2026/at260033.html",
+          "kind": "公式"
+        },
+        {
+          "title": "CISA Critical Vulnerabilities in PHP",
+          "url": "https://www.cisa.gov/news-events/alerts/2026/10/21/critical-vulnerabilities-php-require-immediate-patching",
+          "kind": "公式"
+        },
+        {
+          "title": "IPA PHPの脆弱性対策について",
+          "url": "https://www.ipa.go.jp/security/security-alert/2026/alert20261022.html",
+          "kind": "公式"
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-115560",
+      "title": "PHP session upload progressに関する追加のRCE可能性",
+      "priority": "利用確認",
+      "change": "継続",
+      "tags": [
+        "PHP"
+      ],
+      "summary": "特定の設定とアプリケーションコードの組み合わせでのみ生じうるとされるRCE。2026-10-29のJPCERT更新は主に別CVEの侵害報告追記で、本CVEの新たな公式事実は確認できない。",
+      "reason": "条件付きのコード実行。開発者は一般的でない構成とし、通常リリースで修正する方針。個別の悪用確認は未確認。",
+      "affected": "特定設定とアプリコードの組み合わせ。詳細条件は不明。利用環境への該当は未判定。",
+      "check": "session.upload_progress.enabledの値と、該当しうるアプリケーションコードの有無を確認する。",
+      "action": "修正版提供までsession.upload_progress.enabled=0とし、全ワーカーを再起動する。既に適用済みなら追加対応は不要とされる。",
+      "verification": "公式確認済み",
+      "sources": [
+        {
+          "title": "JPCERT/CC PHP注意喚起",
+          "url": "https://www.jpcert.or.jp/at/2026/at260033.html",
+          "kind": "公式"
+        },
+        {
+          "title": "The PHP Group Informational advisory",
+          "url": "https://www.php.net/archive/2026.php#2026-10-23-1",
+          "kind": "公式"
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-97229",
+      "title": "GitLab CE/EEの整数オーバーフロー脆弱性",
+      "priority": "利用確認",
+      "change": "新規",
+      "tags": [
+        "認証"
+      ],
+      "summary": "CISAが2026-10-29にKEVへ追加。Integer Overflow or Wraparound。影響バージョンと修正版は今回未確認。",
+      "reason": "悪用の証拠に基づきKEV掲載。公開されたGitLabがあれば優先して確認する。連邦機関向けBODの具体期限は今回開いた本文になく、一般企業の義務ではない。",
+      "affected": "不明。利用環境への該当は未判定。",
+      "check": "GitLab CE/EEの利用有無とバージョンを、開発元のアドバイザリと照合する。",
+      "action": "不明。開発元の修正情報を確認し、外部公開資産を優先する。侵害確認の要否は未確認。",
+      "verification": "公式確認済み",
+      "sources": [
+        {
+          "title": "CISA Adds Two Known Exploited Vulnerabilities to Catalog",
+          "url": "https://www.cisa.gov/news-events/alerts/2026/10/29/cisa-adds-two-known-exploited-vulnerabilities-catalog",
+          "kind": "公式"
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-76418",
+      "title": "Cisco Secure Firewall ASA/FTDのNULLポインタ参照脆弱性",
+      "priority": "動向把握",
+      "change": "新規",
+      "tags": [
+        "OS"
+      ],
+      "summary": "CISAが2026-10-29にKEVへ追加。Unchecked Return Value to NULL Pointer Dereference。影響バージョンと修正版は今回未確認。",
+      "reason": "悪用の証拠に基づきKEV掲載。管理インターフェースが外部公開なら確認対象。詳細な悪用条件は未確認。連邦向け指示を一般企業の義務としない。",
+      "affected": "不明。利用環境への該当は未判定。",
+      "check": "Cisco Secure Firewall ASA/FTDの利用有無とバージョンをベンダー情報と照合する。",
+      "action": "不明。Ciscoの修正版と推奨対策を確認する。",
+      "verification": "公式確認済み",
+      "sources": [
+        {
+          "title": "CISA Adds Two Known Exploited Vulnerabilities to Catalog",
+          "url": "https://www.cisa.gov/news-events/alerts/2026/10/29/cisa-adds-two-known-exploited-vulnerabilities-catalog",
+          "kind": "公式"
+        }
+      ]
+    },
+    {
+      "id": "JPCERT-AT-2026-0030",
+      "title": "直近で相次いでいる国内組織における不正アクセスに関する注意喚起",
+      "priority": "動向把握",
+      "change": "継続",
+      "tags": [
+        "認証"
+      ],
+      "summary": "注意喚起一覧では2026-10-23更新のまま。一覧自体の最終更新は2026-10-29だが、本項目の期間内更新行はない。本文は今回未確認。",
+      "reason": "国内組織の不正アクセス事案への注意。期間内の公式更新は確認できない。",
+      "affected": "不明。利用環境への該当は未判定。",
+      "check": "注意喚起本文の対象システムと点検項目を確認する。本文は今回未読。",
+      "action": "不明。本文の推奨対策を確認する。",
+      "verification": "未確認",
+      "sources": [
+        {
+          "title": "JPCERT/CC 注意喚起一覧",
+          "url": "https://www.jpcert.or.jp/at/2026.html",
+          "kind": "公式"
+        }
+      ]
+    }
+  ],
+  "date": "2026-10-30",
+  "generatedAt": "2026-10-30T07:01:45.819Z",
+  "model": "grok-4.7",
+  "usage": {
+    "inputTokens": 67438,
+    "outputTokens": 8124,
+    "tools": {
+      "web_search_calls": 5,
+      "x_search_calls": 1,
+      "x_posts_fetched": 10,
+      "x_users_fetched": 0,
+      "code_interpreter_calls": 0,
+      "file_search_calls": 0,
+      "mcp_calls": 0,
+      "document_search_calls": 0,
+      "image_generation_calls": 0
+    }
+  },
+  "fingerprint": "2bf3746724b0b241a80b2f15ca5619135109fbc032c5341c864d3b6fd03d8cb8"
+}
