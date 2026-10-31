@@ -1,0 +1,104 @@
+{
+  "summary": "指定アカウントの直近投稿に脆弱性話題はなく、期間内の公式確認は既報PHP2Shellの継続が中心。JPCERT一覧に2026-10-29以降の新規脆弱性注意喚起は見当たらない。GitLabとCiscoのKEV項目は今回再確認できず未確認。",
+  "coverage": {
+    "x": "from:k_koyanagi_null をLatestで1回、10件取得。返却は2026-10-31の投稿のみで、脆弱性や注意喚起の話題は含まれない。2026-10-29まで遡る追加検索は未実施。",
+    "official": "JPCERTお知らせ一覧（最終更新2026-10-30）、PHP注意喚起本文、IPAのPHP対策ページを確認。CISAのPHPアラートは検索結果の範囲。GitLab CVE-2026-97229、Cisco CVE-2026-76418、KEVの期間内追加、Brotli（CVE-2026-111497、一覧上は2026-10-26公開）の本文は未確認。"
+  },
+  "items": [
+    {
+      "id": "CVE-2026-109618,CVE-2026-109619",
+      "title": "PHPにおける未認証リモートコード実行の脆弱性（PHP2Shell）",
+      "priority": "今日確認",
+      "change": "継続",
+      "tags": [
+        "PHP"
+      ],
+      "summary": "Webリクエスト処理に関する未認証RCE。JPCERT注意喚起の最終更新は2026-10-29のままで、改訂履歴も同日追記で止まっている。期間内の追加公式事実は確認できない。",
+      "reason": "未認証で外部公開のPHPが対象になり得る。CISA KEV掲載と悪用試行の報告があり、2026-10-29追記では特定ファイアウォール製品の侵害痕跡、Linuxカーネル権限昇格との組み合わせ、横展開の試みが報告されたとされる。利用環境への該当は未判定。",
+      "affected": "PHP 8.2.35未満の8.2系、8.3.36未満の8.3系、8.4.27未満の8.4系、8.5.12未満の8.5系。8.1以前は修正版なし。組み込み製品は提供元依存。Wiz見解として5.4以降も影響し得る旨がIPAに記載。",
+      "check": "php -v、配布パッケージ、SAPI、インターネット公開の有無を確認する。組み込み製品はベンダー告知を照合する。該当有無は未判定。",
+      "action": "8.2.35、8.3.36、8.4.27、8.5.12へ更新する。即時更新できない場合は開発元の緩和策を確認し、異常なPHPSESSID、不審なmultipart、ワーカー異常終了などの侵害調査を検討する。痕跡がなくても非侵害とは断定できない。",
+      "verification": "公式確認済み",
+      "sources": [
+        {
+          "title": "JPCERT/CC PHP注意喚起 JPCERT-AT-2026-0033",
+          "url": "https://www.jpcert.or.jp/at/2026/at260033.html",
+          "kind": "公式"
+        },
+        {
+          "title": "IPA PHPの脆弱性対策（PHP2shell）",
+          "url": "https://www.ipa.go.jp/security/security-alert/2026/alert20261022.html",
+          "kind": "公式"
+        },
+        {
+          "title": "CISA Critical Vulnerabilities in PHP Require Immediate Patching",
+          "url": "https://www.cisa.gov/news-events/alerts/2026/10/21/critical-vulnerabilities-php-require-immediate-patching",
+          "kind": "公式"
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-115560",
+      "title": "PHP session upload progressに関する追加のRCE可能性",
+      "priority": "利用確認",
+      "change": "継続",
+      "tags": [
+        "PHP"
+      ],
+      "summary": "特定の設定とアプリケーションコードの組み合わせでのみ生じうるとされるRCE。2026-10-29のJPCERT追記は主に別CVEの侵害報告で、本CVEの新たな公式事実は確認できない。",
+      "reason": "開発者は影響構成が一般的でないとし、通常のリリースサイクルで修正する方針。今回確認した公式情報では悪用の新たな確認はない。該当は未判定。",
+      "affected": "特定の設定とアプリケーションコードの組み合わせ。影響バージョンの詳細は今回の確認範囲では不明。",
+      "check": "session.upload_progress.enabled と、アップロード進捗を使うアプリコードの有無を確認する。該当は未判定。",
+      "action": "修正版提供まで session.upload_progress.enabled=0 とし、全ワーカーを再起動するようJPCERTが開発者方針を紹介。CVE-2026-109619向けに既設定なら追加不要とされる。修正バージョンは不明。",
+      "verification": "公式確認済み",
+      "sources": [
+        {
+          "title": "JPCERT/CC PHP注意喚起 JPCERT-AT-2026-0033",
+          "url": "https://www.jpcert.or.jp/at/2026/at260033.html",
+          "kind": "公式"
+        }
+      ]
+    },
+    {
+      "id": "JPCERT-AT-2026-0030",
+      "title": "直近で相次いでいる国内組織における不正アクセスに関する注意喚起",
+      "priority": "動向把握",
+      "change": "継続",
+      "tags": [
+        "認証"
+      ],
+      "summary": "お知らせ一覧では2026-10-23更新のまま。一覧自体の最終更新は2026-10-30だが、本項目の期間内更新行はない。本文は今回未確認。",
+      "reason": "国内組織の不正アクセスに関する継続注意喚起。期間内の新規事実は一覧上確認できない。本文未読のため影響や悪用状況の更新は未確認。",
+      "affected": "不明。本文は未確認。",
+      "check": "注意喚起本文と自組織の公開サービス、認証経路を突合する。該当は未判定。",
+      "action": "本文未確認のため個別の修正版や暫定対策は不明。一覧で期間内更新がないこと以外は未確認。",
+      "verification": "未確認",
+      "sources": [
+        {
+          "title": "JPCERT/CCからのお知らせ 2026",
+          "url": "https://www.jpcert.or.jp/update/2026.html",
+          "kind": "公式"
+        }
+      ]
+    }
+  ],
+  "date": "2026-10-31",
+  "generatedAt": "2026-10-31T06:55:51.762Z",
+  "model": "grok-4.7",
+  "usage": {
+    "inputTokens": 58249,
+    "outputTokens": 7580,
+    "tools": {
+      "web_search_calls": 4,
+      "x_search_calls": 1,
+      "x_posts_fetched": 10,
+      "x_users_fetched": 0,
+      "code_interpreter_calls": 0,
+      "file_search_calls": 0,
+      "mcp_calls": 0,
+      "document_search_calls": 0,
+      "image_generation_calls": 0
+    }
+  },
+  "fingerprint": "f1cbb42adcb45f03099d41a837c93774ee8f1666e42a5a8e496682da1afd64b2"
+}
