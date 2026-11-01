@@ -1,0 +1,99 @@
+{
+  "summary": "指定アカウントの最新投稿に脆弱性の話題はなく、対象期間の新規公式注意喚起は確認できない。PHP2Shell関連は前回内容の継続で、CISA注意喚起の最終改訂は2026-10-26のまま。JPCERT-AT-2026-0030の本文は今回未取得で期間内更新は未確認。TECH+面にLinuxカーネル脆弱性の見出し（2026-10-30）があったが記事と公式は未確認のため項目化していない。",
+  "coverage": {
+    "x": "from:k_koyanagi_nullをLatestで10件検索。取得分は2026-11-01の個人投稿のみでセキュリティ話題はなし。これより古い10月30–31日の投稿は結果に含まれず未確認。",
+    "official": "Web検索1回、ページ3件（CISA注意喚起、TECH+、二次まとめ）。CISAはLast Revised 2026-10-26。JPCERT/CC・IPA・PHP.net本文は未取得。期間内の公式改訂は確認できない。"
+  },
+  "items": [
+    {
+      "id": "CVE-2026-109618,CVE-2026-109619",
+      "title": "PHPにおける未認証リモートコード実行の脆弱性（PHP2Shell）",
+      "priority": "今日確認",
+      "change": "継続",
+      "tags": [
+        "PHP"
+      ],
+      "summary": "Webリクエスト処理に関する未認証RCE。CISA注意喚起の最終改訂は2026-10-26のまま。期間内の追加公式事実は確認できない。TECH+の2026-10-30更新は、2026-10-29のJPCERT更新の報道で新規公式事実ではない。",
+      "reason": "認証不要で遠隔からコード実行されうる。CISAは2026-10-26にKEVへ追加し悪用を確認している。外部公開環境が対象になりうる。CISAの連邦機関向け期限を一般企業の義務とはしない。",
+      "affected": "修正版はPHP 8.5.12、8.4.27、8.3.36、8.2.35。それより前の各系統で、Webリクエストを処理するPHPが対象。PHP 8.1以前に公式修正版はないとの案内。製品組込みの該当範囲は不明。",
+      "check": "phpのバージョン、製品や共用サーバーの告知を確認する。表示バージョンが古くても配布元独自修正の場合がある。環境台帳はなく該当は未判定。影響なしとは断定しない。",
+      "action": "修正版へ更新する。直ちに更新できない場合、CISAは該当システムをオフラインにするか外部接続を制限するよう勧めている。侵害有無の確認も推奨。期間内の新たな公式手順は未確認。",
+      "verification": "公式確認済み",
+      "sources": [
+        {
+          "title": "CISA Alert: Critical Vulnerabilities in PHP Require Immediate Patching",
+          "url": "https://www.cisa.gov/news-events/alerts/2026/10/21/critical-vulnerabilities-php-require-immediate-patching",
+          "kind": "公式"
+        },
+        {
+          "title": "TECH+ PHPの脆弱性悪用で日本含む4カ国のサーバ25台が侵害か",
+          "url": "https://news.mynavi.jp/techplus/article/20261029-5217835/",
+          "kind": "参考"
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-115560",
+      "title": "PHP session upload progressに関する追加のRCE可能性",
+      "priority": "利用確認",
+      "change": "継続",
+      "tags": [
+        "PHP"
+      ],
+      "summary": "特定の設定とアプリケーションコードの組み合わせでのみ生じうるとされるRCE。期間内の公式更新は確認できない。",
+      "reason": "前回時点で未修正とされ、設定次第で悪用されうる。今回は公式本文を開いておらず、期間内の悪用確認や修正版公開は未確認。",
+      "affected": "不明。二次情報（2026-10-29時点）では最新リリースでも未修正で、session.upload_progress.enabledが関係するとされる。公式条件は未確認。",
+      "check": "設定でsession.upload_progress.enabledの有無を確認する。利用有無は未判定。影響なしとは断定しない。",
+      "action": "二次情報では当該設定の無効化が暫定策。公式の修正版と侵害確認の要否は今回未確認。",
+      "verification": "未確認",
+      "sources": [
+        {
+          "title": "Two Sheep: One Week After PHP2shell (October 2026 Update)",
+          "url": "https://www.2sheep.jp/en/news/php2shell-one-week-update-2026-10",
+          "kind": "参考"
+        }
+      ]
+    },
+    {
+      "id": "JPCERT-AT-2026-0030",
+      "title": "直近で相次いでいる国内組織における不正アクセスに関する注意喚起",
+      "priority": "動向把握",
+      "change": "継続",
+      "tags": [
+        "認証"
+      ],
+      "summary": "前回は2026-10-23更新のままとされていた。今回の検索結果に本注意喚起は現れず、本文は未確認。期間内更新の有無は未確認。",
+      "reason": "国内組織への不正アクセスに関する継続中の注意喚起で、Web開発環境の認証や公開面に関わりうる。新たな公式事実は未確認。",
+      "affected": "不明。本文未取得のため対象製品・条件は不明。",
+      "check": "JPCERT/CCの当該注意喚起本文と更新日を直接確認する。環境への該当は未判定。",
+      "action": "不明。本文を確認するまで具体的な修正や侵害調査手順は示せない。",
+      "verification": "未確認",
+      "sources": [
+        {
+          "title": "TECH+ セキュリティ新着（本注意喚起の公式本文ではない）",
+          "url": "https://news.mynavi.jp/techplus/article/20261029-5217835/",
+          "kind": "参考"
+        }
+      ]
+    }
+  ],
+  "date": "2026-11-01",
+  "generatedAt": "2026-11-01T07:26:49.075Z",
+  "model": "grok-4.7",
+  "usage": {
+    "inputTokens": 42234,
+    "outputTokens": 9281,
+    "tools": {
+      "web_search_calls": 4,
+      "x_search_calls": 1,
+      "x_posts_fetched": 10,
+      "x_users_fetched": 0,
+      "code_interpreter_calls": 0,
+      "file_search_calls": 0,
+      "mcp_calls": 0,
+      "document_search_calls": 0,
+      "image_generation_calls": 0
+    }
+  },
+  "fingerprint": "6a65cc34357ac22986a309fd9a19813ba000a475f0b01d3f6aa4c21e66f07300"
+}
