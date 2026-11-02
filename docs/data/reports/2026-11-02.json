@@ -1,0 +1,82 @@
+{
+  "summary": "対象期間（2026-10-31以降）の公式改訂は、開いたPHP関連ページでは確認できない。指定アカウントのXは脆弱性の新規話題になっていない。",
+  "coverage": {
+    "x": "from:k_koyanagi_null をLatestで1回検索し直近10件を確認。雑談と転載が中心で、対象スタックの脆弱性投稿は見当たらない。アットコスメ漏えいのITmedia転載はあるが本文は未確認。返信・引用の展開はしていない。",
+    "official": "Web検索後、IPA・JPCERT/CC（AT-2026-0033）・CISAのPHP注意喚起を各1件開いた。最終更新はそれぞれ2026-10-27、2026-10-29、2026-10-26。JPCERT-AT-2026-0030とBrotli/HTTP2Shellの公式ページは未開封で、期間内更新は未確認。"
+  },
+  "items": [
+    {
+      "id": "CVE-2026-109618,CVE-2026-109619",
+      "title": "PHPにおける未認証リモートコード実行の脆弱性（PHP2Shell）",
+      "priority": "今日確認",
+      "change": "継続",
+      "tags": [
+        "PHP"
+      ],
+      "summary": "Webリクエスト処理に関する未認証RCE。開いた公式ページの最終更新は期間前のまま。",
+      "reason": "未認証で遠隔からコード実行され得る。CISAは2026-10-26にKEVへ追加済み。期間内の追加公式事実は確認できない。CISA期限は一般企業の義務ではない。",
+      "affected": "PHP 8.2.35未満の8.2系、8.3.36未満の8.3系、8.4.27未満の8.4系、8.5.12未満の8.5系。8.1以前は修正版なし。組み込み製品は製品ごとに不明。",
+      "check": "実行中PHPのバージョンと、Apache mod_php、PHP-FPM、php-cgi、FrankenPHP、LiteSpeed等の公開面を棚卸しする。製品同梱PHPは提供元情報を確認。該当有無は環境ごとに未判定。",
+      "action": "8.2.35、8.3.36、8.4.27、8.5.12へ更新。更新できない公開系は停止やアクセス制限を検討し、侵害痕跡も確認。緩和策は更新の代替にならない。",
+      "verification": "公式確認済み",
+      "sources": [
+        {
+          "title": "IPA PHPの脆弱性対策について（PHP2shell）",
+          "url": "https://www.ipa.go.jp/security/security-alert/2026/alert20261022.html",
+          "kind": "公式"
+        },
+        {
+          "title": "JPCERT/CC PHPにおける複数の脆弱性に関する注意喚起",
+          "url": "https://www.jpcert.or.jp/at/2026/at260033.html",
+          "kind": "公式"
+        },
+        {
+          "title": "CISA Critical Vulnerabilities in PHP Require Immediate Patching",
+          "url": "https://www.cisa.gov/news-events/alerts/2026/10/21/critical-vulnerabilities-php-require-immediate-patching",
+          "kind": "公式"
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-115560",
+      "title": "PHP session upload progressに関する追加のRCE可能性",
+      "priority": "利用確認",
+      "change": "継続",
+      "tags": [
+        "PHP"
+      ],
+      "summary": "特定の設定とアプリケーションコードの組み合わせでのみ生じうるとされるRCE。期間内の公式更新は確認できない。",
+      "reason": "条件付きのコード実行。開発者は一般的な構成ではないとし、通常のリリースサイクルで修正する方針。期間内の悪用確認の追加公式事実は未確認。",
+      "affected": "session upload progressが有効な特定構成。影響バージョンの詳細は今回開いた範囲では不明。",
+      "check": "session.upload_progress.enabled と、アップロード進捗を使うアプリケーションコードの有無を確認。該当は未判定。",
+      "action": "修正版公開までは session.upload_progress.enabled=0 とし全ワーカーを再起動。既に同設定なら追加対応は不要とされる。修正版の有無は不明。",
+      "verification": "公式確認済み",
+      "sources": [
+        {
+          "title": "JPCERT/CC PHPにおける複数の脆弱性に関する注意喚起",
+          "url": "https://www.jpcert.or.jp/at/2026/at260033.html",
+          "kind": "公式"
+        }
+      ]
+    }
+  ],
+  "date": "2026-11-02",
+  "generatedAt": "2026-11-02T07:37:17.079Z",
+  "model": "grok-4.7",
+  "usage": {
+    "inputTokens": 47224,
+    "outputTokens": 5152,
+    "tools": {
+      "web_search_calls": 5,
+      "x_search_calls": 1,
+      "x_posts_fetched": 10,
+      "x_users_fetched": 0,
+      "code_interpreter_calls": 0,
+      "file_search_calls": 0,
+      "mcp_calls": 0,
+      "document_search_calls": 0,
+      "image_generation_calls": 0
+    }
+  },
+  "fingerprint": "dec406909da5508965e6960880e493c618c2cdee3f12c42e37fcf1d813eff37b"
+}
