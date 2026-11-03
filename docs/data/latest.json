@@ -1,8 +1,8 @@
 {
-  "summary": "対象期間（2026-10-31以降）の公式改訂は、開いたPHP関連ページでは確認できない。指定アカウントのXは脆弱性の新規話題になっていない。",
+  "summary": "指定アカウントの直近投稿に対象スタックの新規CVE告知はなく、期間内の公式アドバイザリ更新も確認できなかった。前回のPHP 2件は継続。悪用や修正範囲の新事実は公式では未確認。",
   "coverage": {
-    "x": "from:k_koyanagi_null をLatestで1回検索し直近10件を確認。雑談と転載が中心で、対象スタックの脆弱性投稿は見当たらない。アットコスメ漏えいのITmedia転載はあるが本文は未確認。返信・引用の展開はしていない。",
-    "official": "Web検索後、IPA・JPCERT/CC（AT-2026-0033）・CISAのPHP注意喚起を各1件開いた。最終更新はそれぞれ2026-10-27、2026-10-29、2026-10-26。JPCERT-AT-2026-0030とBrotli/HTTP2Shellの公式ページは未開封で、期間内更新は未確認。"
+    "x": "from:k_koyanagi_null をLatestで1回検索し、2026-11-03 07:00–07:46 UTC前後の投稿10件を確認。CVE告知はなく、WordPressを外部公開しない運用への言及とGMOペイメントゲートウェイの情報漏えいへの反応が中心。投稿URLは結果に含まれず、スレッドは未取得。",
+    "official": "Web検索1回とページ3件（FlowProの11/1週次、bifrostの10/27記事、NVD）。NVDは本文なし。PHP公式、JPCERT/CC、IPA、CISA、GitHub Advisoryは未閲覧。期間内の公式更新は未確認。"
   },
   "items": [
     {
@@ -13,27 +13,22 @@
       "tags": [
         "PHP"
       ],
-      "summary": "Webリクエスト処理に関する未認証RCE。開いた公式ページの最終更新は期間前のまま。",
-      "reason": "未認証で遠隔からコード実行され得る。CISAは2026-10-26にKEVへ追加済み。期間内の追加公式事実は確認できない。CISA期限は一般企業の義務ではない。",
-      "affected": "PHP 8.2.35未満の8.2系、8.3.36未満の8.3系、8.4.27未満の8.4系、8.5.12未満の8.5系。8.1以前は修正版なし。組み込み製品は製品ごとに不明。",
-      "check": "実行中PHPのバージョンと、Apache mod_php、PHP-FPM、php-cgi、FrankenPHP、LiteSpeed等の公開面を棚卸しする。製品同梱PHPは提供元情報を確認。該当有無は環境ごとに未判定。",
-      "action": "8.2.35、8.3.36、8.4.27、8.5.12へ更新。更新できない公開系は停止やアクセス制限を検討し、侵害痕跡も確認。緩和策は更新の代替にならない。",
-      "verification": "公式確認済み",
+      "summary": "Webリクエスト処理に関する未認証RCE。二次情報は悪用継続を主張するが、期間内の公式更新は確認できない。",
+      "reason": "未認証で外部公開のPHPに届きうる。悪用の有無は二次情報のみで、公式の期間内更新は未確認。CISAの期限は一般企業の義務としない。",
+      "affected": "二次情報では8.5.12、8.4.27、8.3.36、8.2.35未満のWeb実行系。8.1以前は上流修正なしとの記載。公式の再確認は未了で、利用環境への該当は未判定。",
+      "check": "稼働中のPHPバージョンとSAPI（php-fpm、mod_php、php-cgi等）およびコンテナイメージを確認する。台帳がないため該当判定はしない。",
+      "action": "ベンダーまたはOSの修正版へ更新しワーカーを再起動する。未修正なら外部公開の切り離しを検討。悪用主張があるため侵害痕跡の確認を検討。修正版の公式再確認は未了。",
+      "verification": "未確認",
       "sources": [
         {
-          "title": "IPA PHPの脆弱性対策について（PHP2shell）",
-          "url": "https://www.ipa.go.jp/security/security-alert/2026/alert20261022.html",
-          "kind": "公式"
+          "title": "FlowPro Security news 44/2026",
+          "url": "https://www.flowpro.eu/en/security-news/2026-44",
+          "kind": "参考"
         },
         {
-          "title": "JPCERT/CC PHPにおける複数の脆弱性に関する注意喚起",
-          "url": "https://www.jpcert.or.jp/at/2026/at260033.html",
-          "kind": "公式"
-        },
-        {
-          "title": "CISA Critical Vulnerabilities in PHP Require Immediate Patching",
-          "url": "https://www.cisa.gov/news-events/alerts/2026/10/21/critical-vulnerabilities-php-require-immediate-patching",
-          "kind": "公式"
+          "title": "bifrost security: PHP2Shell and node2shell",
+          "url": "https://bifrostsec.com/blog/2026/keeping-up-with-an-avalanche/",
+          "kind": "参考"
         }
       ]
     },
@@ -46,28 +41,33 @@
         "PHP"
       ],
       "summary": "特定の設定とアプリケーションコードの組み合わせでのみ生じうるとされるRCE。期間内の公式更新は確認できない。",
-      "reason": "条件付きのコード実行。開発者は一般的な構成ではないとし、通常のリリースサイクルで修正する方針。期間内の悪用確認の追加公式事実は未確認。",
-      "affected": "session upload progressが有効な特定構成。影響バージョンの詳細は今回開いた範囲では不明。",
-      "check": "session.upload_progress.enabled と、アップロード進捗を使うアプリケーションコードの有無を確認。該当は未判定。",
-      "action": "修正版公開までは session.upload_progress.enabled=0 とし全ワーカーを再起動。既に同設定なら追加対応は不要とされる。修正版の有無は不明。",
-      "verification": "公式確認済み",
+      "reason": "PHP2Shellとは別の追加指摘。二次情報では発生条件が限定的で、次回定期リリースでの修正待ちとされる。期間内の悪用確認は未確認。",
+      "affected": "影響バージョンは不明。二次情報ではsession.upload_progress.enabledが有効な場合が条件。公式の再確認は未了で、該当は未判定。",
+      "check": "php.ini等のsession.upload_progress.enabledと、アップロード進捗を使うアプリ実装の有無を確認する。",
+      "action": "二次情報では修正までsession.upload_progress.enabled=0が推奨される。公式の修正版と暫定対策の再確認は未了。侵害確認の要否は不明。",
+      "verification": "未確認",
       "sources": [
         {
-          "title": "JPCERT/CC PHPにおける複数の脆弱性に関する注意喚起",
-          "url": "https://www.jpcert.or.jp/at/2026/at260033.html",
-          "kind": "公式"
+          "title": "bifrost security: PHP2Shell and node2shell",
+          "url": "https://bifrostsec.com/blog/2026/keeping-up-with-an-avalanche/",
+          "kind": "参考"
+        },
+        {
+          "title": "oss-security上のPHP投稿（ページ内リンク、本文未確認）",
+          "url": "https://seclists.org/oss-sec/2026/q4/359",
+          "kind": "参考"
         }
       ]
     }
   ],
-  "date": "2026-11-02",
-  "generatedAt": "2026-11-02T07:37:17.079Z",
+  "date": "2026-11-03",
+  "generatedAt": "2026-11-03T07:50:31.103Z",
   "model": "grok-4.7",
   "usage": {
-    "inputTokens": 47224,
-    "outputTokens": 5152,
+    "inputTokens": 69177,
+    "outputTokens": 7105,
     "tools": {
-      "web_search_calls": 5,
+      "web_search_calls": 4,
       "x_search_calls": 1,
       "x_posts_fetched": 10,
       "x_users_fetched": 0,
@@ -78,5 +78,5 @@
       "image_generation_calls": 0
     }
   },
-  "fingerprint": "dec406909da5508965e6960880e493c618c2cdee3f12c42e37fcf1d813eff37b"
+  "fingerprint": "ad7ba53e187aec5d62425a3172b46c441c2f0b2f22d83fdd0971c56461bec3b1"
 }
