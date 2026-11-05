@@ -1,0 +1,78 @@
+{
+  "summary": "指定アカウントのX検索はレート制限で失敗し投稿を取得できず。JPCERT/CC週報とCISA KEVでWordPress CVE-2026-119977の11月3日追加を公式確認し更新扱い。PHP2ShellのIPAページは11月2日が最終更新で期間内変化なし。CVE-2026-115560は検索結果に登場せず未確認。",
+  "coverage": {
+    "x": "from:k_koyanagi_null since:2026-11-03 をLatestで1回検索したが429エラーとなり投稿0件。話題の発見はできなかった。",
+    "official": "Web検索後、IPAのPHP注意喚起、JPCERT/CC週報2026-11-05、CISA KEVカタログ（CVE-2026-119977）を開いて確認。開発元のバージョン一覧や他CVEの一次情報は未着手で、週報が再掲する10月分の詳細は深掘りしていない。"
+  },
+  "items": [
+    {
+      "id": "CVE-2026-119977",
+      "title": "WordPress Coreのアップグレード処理に関する競合の脆弱性",
+      "priority": "今日確認",
+      "change": "更新",
+      "tags": [
+        "WordPress",
+        "PHP"
+      ],
+      "summary": "フルパッケージのコア更新時、予測可能なWeb到達可能なステージング経路を使うTOCTOUにより、更新ウィンドウ中に未認証でコード実行されうる。CISA KEVへ2026-11-03追加。",
+      "reason": "CISAが悪用済みとして掲載し、フォレンジック確認を要するとしている。ランサム利用はUnknown。インターネット公開で更新処理が走る環境では外部から到達しうる。証拠の中身は未公開。",
+      "affected": "CISA記載にバージョン番号の明示なし。フルパッケージのコアアップグレード実施時が条件。詳細バージョンは開発元情報で要確認。",
+      "check": "稼働WordPressの版と、直近のコア全体更新の有無・時刻を確認する。開発元の7.1.4告知と自環境の更新経路を照合する。",
+      "action": "ベンダ指示の修正版へ更新する。更新前後のログと不審ファイルを確認する。CISAの11月6日期限とBOD 26-04は連邦機関向けであり、一般企業の義務ではない。",
+      "verification": "公式確認済み",
+      "sources": [
+        {
+          "title": "CISA Known Exploited Vulnerabilities Catalog CVE-2026-119977",
+          "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog?field_cve=CVE-2026-119977",
+          "kind": "公式"
+        },
+        {
+          "title": "JPCERT/CC WEEKLY REPORT 2026-11-05",
+          "url": "https://www.jpcert.or.jp/wr/2026/wr261105.html",
+          "kind": "公式"
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-109618,CVE-2026-109619",
+      "title": "PHPにおける未認証リモートコード実行の脆弱性（PHP2Shell）",
+      "priority": "利用確認",
+      "change": "継続",
+      "tags": [
+        "PHP"
+      ],
+      "summary": "リクエスト処理のメモリ不備等による未認証RCE。IPA最終更新は2026年11月2日で、対象期間内のページ更新は確認できない。",
+      "reason": "既知のKEV掲載と悪用報告が継続。期間内の新たな公式事実は見つからず。公開されたPHPや組込ウェブUIでは依然リスク。",
+      "affected": "PHP 8.2.35未満の8.2系、8.3.36未満の8.3系、8.4.27未満の8.4系、8.5.12未満の8.5系。8.1以前は修正版なし。VPN機器やアプライアンスのウェブインターフェース等も影響しうる。",
+      "check": "PHPバージョンを確認する。直接利用がなくても、機器・製品のウェブ管理画面にPHPが含まれるかをベンダ情報で確認する。",
+      "action": "8.2.35 / 8.3.36 / 8.4.27 / 8.5.12へ更新する。即時更新が難しければアクセス制限や公開停止を検討し、侵害有無も確認する。",
+      "verification": "公式確認済み",
+      "sources": [
+        {
+          "title": "IPA PHPの脆弱性対策について(CVE-2026-109618、CVE-2026-109619：PHP2shell)",
+          "url": "https://www.ipa.go.jp/security/security-alert/2026/alert20261022.html",
+          "kind": "公式"
+        }
+      ]
+    }
+  ],
+  "date": "2026-11-05",
+  "generatedAt": "2026-11-05T07:52:52.933Z",
+  "model": "grok-4.7",
+  "usage": {
+    "inputTokens": 85688,
+    "outputTokens": 11973,
+    "tools": {
+      "web_search_calls": 6,
+      "x_search_calls": 0,
+      "x_posts_fetched": 0,
+      "x_users_fetched": 0,
+      "code_interpreter_calls": 0,
+      "file_search_calls": 0,
+      "mcp_calls": 0,
+      "document_search_calls": 0,
+      "image_generation_calls": 0
+    }
+  },
+  "fingerprint": "65fa3ea241d365d968bb15a123bf555d56d82a3f86cafa7719dae95bfa12b1b7"
+}
