@@ -1,0 +1,61 @@
+{
+  "summary": "指定アカウントの期間内投稿にセキュリティ話題はなく、公式照合でも対象期間の新規重大注意喚起は確認できず。既知のWordPress Core競合脆弱性に新事実なし。",
+  "coverage": {
+    "x": "from:k_koyanagi_null since:2026-11-06 を1回検索。セキュリティ関連投稿はなく、業務・雑談が中心。他アカウントや期間外は未検索。",
+    "official": "Web検索1回とページ参照3件（CISA KEV、WordPress 7.1.4、NC4）。期間内の新規公式重大注意喚起や対象技術の新事実は確認できず。JPCERT/CC・IPA等の期間内更新は未確認。"
+  },
+  "items": [
+    {
+      "id": "CVE-2026-119977",
+      "title": "WordPress Coreのアップグレード処理に関する競合の脆弱性",
+      "priority": "利用確認",
+      "change": "継続",
+      "tags": [
+        "PHP",
+        "WordPress"
+      ],
+      "summary": "フルパッケージ更新時の予測可能なWeb到達ステージング経路によるTOCTOU。未認証で更新ウィンドウ中にコード実行されうる。期間内の新事実は未確認。",
+      "reason": "CISA KEV追加（2026-11-03）で悪用の証拠あり。更新のたび窓が開く。一般企業へのCISA期限は義務ではない。期間内の追加悪用確認・修正情報は未確認。",
+      "affected": "WordPress Core 4.7から7.1.3（公式は7.1.4で当該弱点を修正と告知）。旧ブランチの修正版一覧はベンダー一次情報で期間内に再確認できず不明。フルパッケージ更新実行時に限る。",
+      "check": "ダッシュボードまたはwp core versionでバージョンと自動更新の有無を確認。wp-content/upgrade/のWeb到達性と更新前後のアクセスログを確認。利用環境への該当は未判定。",
+      "action": "7.1.4へ更新。更新前にupgradeディレクトリへのWebアクセス拒否を検討。更新時刻付近の不審リクエストと改ざんの有無を確認。旧ブランチの正確な修正版は不明のためベンダー情報で確認。",
+      "verification": "公式確認済み",
+      "sources": [
+        {
+          "title": "WordPress 7.1.4",
+          "url": "https://wordpress.org/news/2026/10/wordpress-7-1-4/",
+          "kind": "公式"
+        },
+        {
+          "title": "CISA Known Exploited Vulnerabilities Catalog",
+          "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog-print",
+          "kind": "公式"
+        },
+        {
+          "title": "NC4 Alert NC4-ALR-2026-000016",
+          "url": "https://www.nc4.gov.my/alertAdvisory-detail/NC4-ALR-2026-000016",
+          "kind": "参考"
+        }
+      ]
+    }
+  ],
+  "date": "2026-11-08",
+  "generatedAt": "2026-11-08T07:14:20.611Z",
+  "model": "grok-4.7",
+  "usage": {
+    "inputTokens": 39346,
+    "outputTokens": 5930,
+    "tools": {
+      "web_search_calls": 4,
+      "x_search_calls": 1,
+      "x_posts_fetched": 10,
+      "x_users_fetched": 0,
+      "code_interpreter_calls": 0,
+      "file_search_calls": 0,
+      "mcp_calls": 0,
+      "document_search_calls": 0,
+      "image_generation_calls": 0
+    }
+  },
+  "fingerprint": "3d61fbf80a87abaa0bb3414878e273a8531e85e5651e05950180094620f0888f"
+}
