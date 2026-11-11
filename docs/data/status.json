@@ -1,5 +1,6 @@
 {
-  "attemptedAt": "2026-11-11T07:42:16.297Z",
-  "state": "error",
-  "message": "Unexpected non-whitespace character after JSON at position 97 (line 2 column 1)"
+  "attemptedAt": "2026-11-11T09:14:36.470Z",
+  "state": "ok",
+  "message": "2件を整理しました",
+  "lastSuccessAt": "2026-11-11T09:14:36.470Z"
 }

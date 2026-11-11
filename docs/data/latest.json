@@ -1,8 +1,8 @@
 {
-  "summary": "指定アカウントの直近投稿にセキュリティ話題はなかった。期間内に公式確認できた対象寄りの新規はCISAのKEV追加（OpenSSH）のみ。Railsは期間前の継続で追加更新は未確認。前回のWordPress項目は期間内の新事実を再確認できず、出典も再取得していない。",
+  "summary": "指定アカウントの期間内投稿にセキュリティ話題はなし。公式の新規重大注意喚起は確認できず。悪意あるRuby gemの11/10報道を新規記載（公式未確認）。既知Rails更新は継続で期間内の追加事実なし。前回OpenSSH項目は今回の検索結果に含まれず再確認できていない。",
   "coverage": {
-    "x": "from:k_koyanagi_null のLatestを10件確認。2026-11-10の投稿は経営・時事の短文が中心で、脆弱性や依存関係の話題は見当たらず。期間全体の網羅やスレッド深掘りは未実施。",
-    "official": "製品向け検索、CISAアラート1件、二次報道1件までに限定。Railsの2026-11-04発表は再確認したが期間内更新は未確認。JPCERT/CC、IPA、GitHub Advisory、各CVEの影響バージョンと修正版は未取得。"
+    "x": "from:k_koyanagi_null since:2026-11-09 のLatestを1回検索。直近投稿は日常・業務雑談のみでセキュリティ関連なし。全件網羅や返信スレッドの深掘りはしていない。",
+    "official": "Web検索1回とページオープン3件（報道記事、非公式脆弱性一覧、2026-11-05のJPCERT週報）。期間内のJPCERT/CC・IPA・CISA・開発元GHSA等の新規重大注意喚起はヒットせず。古い情報と非公式が中心で、調べきれない事項は未確認。"
   },
   "items": [
     {
@@ -11,62 +11,60 @@
       "priority": "利用確認",
       "change": "継続",
       "tags": [
-        "Ruby",
-        "Rails"
+        "Ruby"
       ],
-      "summary": "前回と同じ。2026-11-04公開の8.0.5.2と8.1.4.1は21件のセキュリティ修正を含む。Active Storageの任意ファイル読み書きとRCEの可能性を含む。期間内の追加更新は未確認。",
-      "reason": "未認証で到達しうる重大な不具合を含むため、未適用なら確認が必要。期間内の新たな悪用確認は未確認。",
-      "affected": "案内上は8.0.5.2未満および8.1.4.1未満。8.0より前はサポート外。個別条件の本文は今回未取得。",
-      "check": "Gemfile.lockのrails版とActive Storageの利用有無を確認する。環境台帳がないため該当は未判定。",
-      "action": "8.0系は8.0.5.2、8.1系は8.1.4.1へ更新する。8.0のセキュリティサポート終了は2026-11-07との案内。暫定対策と侵害確認の要否は構成次第で未判定。",
+      "summary": "前回と同じ。2026-11-04公開の8.0.5.2と8.1.4.1は複数セキュリティ修正を含む。期間内の追加更新や新たな悪用確認は未確認。",
+      "reason": "Active Storageの任意ファイル読み書きやRCEの可能性を含む修正がある。今回の調査では期間内の悪用状況や追加リリースは確認できず。",
+      "affected": "8.0系は8.0.5.2未満、8.1系は8.1.4.1未満が対象との告知。古い系列は非サポート。個別条件は各アドバイザリ参照。利用環境への該当は未判定。",
+      "check": "稼働中のRailsバージョンと、Active Storage等の使用有無を確認する。",
+      "action": "未適用ならサポート対象系列への更新を検討。外部公開時は更新ログの確認を。侵害の有無は環境依存で断定しない。",
       "verification": "公式確認済み",
       "sources": [
         {
-          "title": "oss-security: Rails security releases 8.0.5.2 and 8.1.4.1",
+          "title": "oss-security Rails security releases 8.0.5.2 and 8.1.4.1",
           "url": "https://www.openwall.com/lists/oss-security/2026/11/04/2",
           "kind": "参考"
         },
         {
-          "title": "CERT-Bund WID-SEC-2026-4317",
-          "url": "https://wid.cert-bund.de/portal/wid/securityadvisory?name=WID-SEC-2026-4317",
+          "title": "GHSA-f3w6-w445-fwh9",
+          "url": "https://github.com/rails/rails/security/advisories/GHSA-f3w6-w445-fwh9",
           "kind": "公式"
         }
       ]
     },
     {
-      "id": "CVE-2026-123158",
-      "title": "OpenSSHの予期しない状態コードに関する脆弱性（CISA KEV追加）",
-      "priority": "今日確認",
+      "id": "strutil-core-malicious-gem",
+      "title": "悪意のあるRuby gem strutil-coreの報道",
+      "priority": "利用確認",
       "change": "新規",
       "tags": [
-        "OS",
-        "OpenSSH"
+        "Ruby"
       ],
-      "summary": "CISAが2026-11-09、悪用の証拠があるとしてKEVへ追加。同じ告示にはGPUStack、FreeSWITCH、IBM Aspera Faspexの3件もあるが、対象スタックへの該当と詳細は未確認。",
-      "reason": "公的機関が現在の悪用を根拠に掲載した。攻撃条件、認証要否、外部公開の要否は告示本文では不明。CISAの連邦機関向け期限は一般企業の義務ではない。",
-      "affected": "不明。影響バージョンと到達条件は今回の確認範囲では未記載。",
-      "check": "運用中のOpenSSH版と、SSHが外部から到達するかを確認する。該当は未判定。",
-      "action": "ディストリビューションまたはOpenBSDの修正情報を照合して更新する。修正版は未確認。公開面がある場合の侵害確認要否も未判定。",
-      "verification": "公式確認済み",
+      "summary": "2026-11-10報道で、strutil-core 1.0.1がインストール時に資格情報窃取とAIツールへのバックドア設置を行うと指摘。短時間で削除されたとされる。",
+      "reason": "開発者端末やCIを狙うサプライチェーン事例。報道では公開依存なし、被害確認なし、拡散成功なし。公式の悪用認定は未確認。",
+      "affected": "strutil-core 1.0.1をインストールした可能性のある環境。関連パッケージ言及あり。詳細条件は不明。利用有無は未判定。",
+      "check": "Gemfile.lock、インストール履歴、CIキャッシュ、コンテナで当該gemの有無と、AIツール設定の不明エントリを確認する。",
+      "action": "該当時は隔離を優先し、トークン失効前のワイパー動作に注意してクリーン環境から資格情報をローテート・再構築を検討。公式アドバイザリと削除事実は未確認。",
+      "verification": "未確認",
       "sources": [
         {
-          "title": "CISA Adds Four Known Exploited Vulnerabilities to Catalog",
-          "url": "https://www.cisa.gov/news-events/alerts/2026/11/09/cisa-adds-four-known-exploited-vulnerabilities-catalog",
-          "kind": "公式"
+          "title": "Malicious Ruby Gem Steals 51 Types of Credentials",
+          "url": "https://cybersecuritynews.com/malicious-ruby-gem/",
+          "kind": "参考"
         }
       ]
     }
   ],
-  "date": "2026-11-10",
-  "generatedAt": "2026-11-10T08:21:04.791Z",
+  "date": "2026-11-11",
+  "generatedAt": "2026-11-11T09:14:36.470Z",
   "model": "grok-4.7",
   "usage": {
-    "inputTokens": 60627,
-    "outputTokens": 8814,
+    "inputTokens": 45794,
+    "outputTokens": 8764,
     "tools": {
-      "web_search_calls": 5,
+      "web_search_calls": 4,
       "x_search_calls": 1,
-      "x_posts_fetched": 10,
+      "x_posts_fetched": 9,
       "x_users_fetched": 0,
       "code_interpreter_calls": 0,
       "file_search_calls": 0,
@@ -75,5 +73,5 @@
       "image_generation_calls": 0
     }
   },
-  "fingerprint": "635dcc2a5ca19b71b90a019ee91d7ea8f5f9011bebbc883db13121e31f11a04f"
+  "fingerprint": "08b47524e2bf4f839b0b177ea09ae73f5c3490ad2eed237dd672a4b33f4fcd97"
 }

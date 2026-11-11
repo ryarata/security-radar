@@ -1,0 +1,77 @@
+{
+  "summary": "指定アカウントの期間内投稿にセキュリティ話題はなし。公式の新規重大注意喚起は確認できず。悪意あるRuby gemの11/10報道を新規記載（公式未確認）。既知Rails更新は継続で期間内の追加事実なし。前回OpenSSH項目は今回の検索結果に含まれず再確認できていない。",
+  "coverage": {
+    "x": "from:k_koyanagi_null since:2026-11-09 のLatestを1回検索。直近投稿は日常・業務雑談のみでセキュリティ関連なし。全件網羅や返信スレッドの深掘りはしていない。",
+    "official": "Web検索1回とページオープン3件（報道記事、非公式脆弱性一覧、2026-11-05のJPCERT週報）。期間内のJPCERT/CC・IPA・CISA・開発元GHSA等の新規重大注意喚起はヒットせず。古い情報と非公式が中心で、調べきれない事項は未確認。"
+  },
+  "items": [
+    {
+      "id": "Rails-8.0.5.2-8.1.4.1",
+      "title": "Ruby on Rails 8.0.5.2/8.1.4.1のセキュリティ更新",
+      "priority": "利用確認",
+      "change": "継続",
+      "tags": [
+        "Ruby"
+      ],
+      "summary": "前回と同じ。2026-11-04公開の8.0.5.2と8.1.4.1は複数セキュリティ修正を含む。期間内の追加更新や新たな悪用確認は未確認。",
+      "reason": "Active Storageの任意ファイル読み書きやRCEの可能性を含む修正がある。今回の調査では期間内の悪用状況や追加リリースは確認できず。",
+      "affected": "8.0系は8.0.5.2未満、8.1系は8.1.4.1未満が対象との告知。古い系列は非サポート。個別条件は各アドバイザリ参照。利用環境への該当は未判定。",
+      "check": "稼働中のRailsバージョンと、Active Storage等の使用有無を確認する。",
+      "action": "未適用ならサポート対象系列への更新を検討。外部公開時は更新ログの確認を。侵害の有無は環境依存で断定しない。",
+      "verification": "公式確認済み",
+      "sources": [
+        {
+          "title": "oss-security Rails security releases 8.0.5.2 and 8.1.4.1",
+          "url": "https://www.openwall.com/lists/oss-security/2026/11/04/2",
+          "kind": "参考"
+        },
+        {
+          "title": "GHSA-f3w6-w445-fwh9",
+          "url": "https://github.com/rails/rails/security/advisories/GHSA-f3w6-w445-fwh9",
+          "kind": "公式"
+        }
+      ]
+    },
+    {
+      "id": "strutil-core-malicious-gem",
+      "title": "悪意のあるRuby gem strutil-coreの報道",
+      "priority": "利用確認",
+      "change": "新規",
+      "tags": [
+        "Ruby"
+      ],
+      "summary": "2026-11-10報道で、strutil-core 1.0.1がインストール時に資格情報窃取とAIツールへのバックドア設置を行うと指摘。短時間で削除されたとされる。",
+      "reason": "開発者端末やCIを狙うサプライチェーン事例。報道では公開依存なし、被害確認なし、拡散成功なし。公式の悪用認定は未確認。",
+      "affected": "strutil-core 1.0.1をインストールした可能性のある環境。関連パッケージ言及あり。詳細条件は不明。利用有無は未判定。",
+      "check": "Gemfile.lock、インストール履歴、CIキャッシュ、コンテナで当該gemの有無と、AIツール設定の不明エントリを確認する。",
+      "action": "該当時は隔離を優先し、トークン失効前のワイパー動作に注意してクリーン環境から資格情報をローテート・再構築を検討。公式アドバイザリと削除事実は未確認。",
+      "verification": "未確認",
+      "sources": [
+        {
+          "title": "Malicious Ruby Gem Steals 51 Types of Credentials",
+          "url": "https://cybersecuritynews.com/malicious-ruby-gem/",
+          "kind": "参考"
+        }
+      ]
+    }
+  ],
+  "date": "2026-11-11",
+  "generatedAt": "2026-11-11T09:14:36.470Z",
+  "model": "grok-4.7",
+  "usage": {
+    "inputTokens": 45794,
+    "outputTokens": 8764,
+    "tools": {
+      "web_search_calls": 4,
+      "x_search_calls": 1,
+      "x_posts_fetched": 9,
+      "x_users_fetched": 0,
+      "code_interpreter_calls": 0,
+      "file_search_calls": 0,
+      "mcp_calls": 0,
+      "document_search_calls": 0,
+      "image_generation_calls": 0
+    }
+  },
+  "fingerprint": "08b47524e2bf4f839b0b177ea09ae73f5c3490ad2eed237dd672a4b33f4fcd97"
+}
