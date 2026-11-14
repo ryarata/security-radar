@@ -1,0 +1,73 @@
+{
+  "summary": "指定アカウントの期間内投稿にセキュリティ話題はなく、Rails関連はGHSAデータベース掲載の更新のみで新たな修正版・悪用確認はなし。悪意あるgemにも期間内の追加公式情報は確認できず。",
+  "coverage": {
+    "x": "from:k_koyanagi_null since:2026-11-12 のLatestを5件取得。セキュリティ関連はなく日常投稿のみ。全件・返信文脈・非公開は未カバー。",
+    "official": "GitHub Advisory DatabaseのRubyGems一覧と個別GHSA2件を確認。JPCERT/CC・IPA・CISA等の期間内新規重大注意喚起は検索結果になく未確認。個別の全アドバイザリ全文や悪用報告の網羅は未実施。"
+  },
+  "items": [
+    {
+      "id": "Rails-8.0.5.2-8.1.4.1",
+      "title": "Ruby on Rails 8.0.5.2/8.1.4.1のセキュリティ更新",
+      "priority": "利用確認",
+      "change": "更新",
+      "tags": [
+        "Ruby",
+        "Rails"
+      ],
+      "summary": "2026-11-04の修正版に含まれるActive Storageの重大問題が、GitHub Advisory Databaseへ2026-11-12に掲載・更新された。修正版は従来どおりで、期間内の新たなパッチや悪用確認はなし。",
+      "reason": "未認証のファイルアップロード経由で任意ファイル書き込み・読み取りに至る可能性があり、秘密情報露出からRCEへ発展し得る。アドバイザリに悪用事例の記載はなく、悪用状況は未確認。",
+      "affected": "activestorageが8.0.5.2未満、または8.1系で8.1.4.1未満。ImageMagick（mini_magick、load_defaults 6.1以前の既定等）で処理し信頼できないアップロードを受ける場合。7.x系の修正版は不明（未サポート扱い）。",
+      "check": "Gemfile.lockまたはbundle show activestorageでバージョンを確認。config.active_storage.variant_processorが:mini_magickか、アップロード受付の有無を確認。利用環境への該当は未判定。",
+      "action": "未適用なら8.0.5.2または8.1.4.1へ更新（mini_magick 5.1以上が必要な場合あり）。Diskサービス利用時は露出し得る秘密のローテーションを検討。侵害の公式確認手順はアドバイザリに限定的で、追加の悪用確認は未確認。",
+      "verification": "公式確認済み",
+      "sources": [
+        {
+          "title": "Active Storage GHSA-f3w6-w445-fwh9",
+          "url": "https://github.com/advisories/GHSA-f3w6-w445-fwh9",
+          "kind": "公式"
+        }
+      ]
+    },
+    {
+      "id": "strutil-core-malicious-gem",
+      "title": "悪意のあるRuby gem strutil-core",
+      "priority": "動向把握",
+      "change": "継続",
+      "tags": [
+        "Ruby"
+      ],
+      "summary": "strutil-core 1.0.1はインストール時に資格情報窃取等を行うマルウェアとして2026-11-10にGHSA掲載。最終更新も同日で、期間内の公式追加情報は確認できず。",
+      "reason": "gem install時に多数のクラウド・開発ツール資格情報を読み取り外部へ通信し永続化を試みるとされる。短時間で削除されたとの既報はあるが、期間内の新たな悪用や公式続報は未確認。",
+      "affected": "strutil-core = 1.0.1。パッチ版なし。導入済みかどうかは環境依存で未判定。",
+      "check": "gem listまたはGemfile.lock、インストール履歴でstrutil-coreの有無を確認。",
+      "action": "導入痕跡があれば削除し、関連資格情報の不正利用有無を自環境で調査。公式の追加緩和策は不明。",
+      "verification": "公式確認済み",
+      "sources": [
+        {
+          "title": "Malicious code in strutil-core GHSA-gv9w-h836-5f8g",
+          "url": "https://github.com/advisories/GHSA-gv9w-h836-5f8g",
+          "kind": "公式"
+        }
+      ]
+    }
+  ],
+  "date": "2026-11-14",
+  "generatedAt": "2026-11-14T07:33:12.020Z",
+  "model": "grok-4.7",
+  "usage": {
+    "inputTokens": 76515,
+    "outputTokens": 9508,
+    "tools": {
+      "web_search_calls": 5,
+      "x_search_calls": 1,
+      "x_posts_fetched": 5,
+      "x_users_fetched": 0,
+      "code_interpreter_calls": 0,
+      "file_search_calls": 0,
+      "mcp_calls": 0,
+      "document_search_calls": 0,
+      "image_generation_calls": 0
+    }
+  },
+  "fingerprint": "503b4b1e1cdc98c41efec7d6484fe0d7f97ced8659e15cbf6c6e2cd1a57a2024"
+}

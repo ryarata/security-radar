@@ -1,67 +1,66 @@
 {
-  "summary": "指定アカウントのX投稿に対象セキュリティ話題はなく、期間内の対象技術に関する新たな重大公式注意喚起は確認できず。前回のRails更新と悪意あるgem報道は追加事実なく継続。",
+  "summary": "指定アカウントの期間内投稿にセキュリティ話題はなく、Rails関連はGHSAデータベース掲載の更新のみで新たな修正版・悪用確認はなし。悪意あるgemにも期間内の追加公式情報は確認できず。",
   "coverage": {
-    "x": "from:k_koyanagi_null のLatest最大10件を検索。返却は2026-11-13の投稿のみでセキュリティ話題なし。11-12日分は結果に含まれず限界あり。",
-    "official": "Web検索1回とページ3件（JVNのCISA ICS通知、Rails公式リリース、二次報道）を確認。Railsの11/4更新を再確認したが期間内追加なし。対象Web技術の新たな重大公式注意喚起は未確認。ICS通知は対象外。網羅性に限界あり。"
+    "x": "from:k_koyanagi_null since:2026-11-12 のLatestを5件取得。セキュリティ関連はなく日常投稿のみ。全件・返信文脈・非公開は未カバー。",
+    "official": "GitHub Advisory DatabaseのRubyGems一覧と個別GHSA2件を確認。JPCERT/CC・IPA・CISA等の期間内新規重大注意喚起は検索結果になく未確認。個別の全アドバイザリ全文や悪用報告の網羅は未実施。"
   },
   "items": [
     {
       "id": "Rails-8.0.5.2-8.1.4.1",
       "title": "Ruby on Rails 8.0.5.2/8.1.4.1のセキュリティ更新",
       "priority": "利用確認",
-      "change": "継続",
+      "change": "更新",
       "tags": [
         "Ruby",
         "Rails"
       ],
-      "summary": "2026-11-04公開の8.0.5.2と8.1.4.1は21件のセキュリティ修正を含む。期間内の追加更新や新たな悪用確認は未確認。",
-      "reason": "Active Storageの任意ファイル操作など重大な問題を含む。期間内の悪用状況は未確認。外部公開アプリで影響しうる。",
-      "affected": "8.0系の8.0.5.2未満、8.1系の8.1.4.1未満など。サポート外の旧版も影響の可能性。利用環境への該当は未判定。",
-      "check": "rails -v または Gemfile.lock でバージョンを確認する。",
-      "action": "8.0.5.2または8.1.4.1以上へ更新。8.0系のセキュリティサポートは2026-11-07終了。悪用は未確認のため状況に応じて確認。",
+      "summary": "2026-11-04の修正版に含まれるActive Storageの重大問題が、GitHub Advisory Databaseへ2026-11-12に掲載・更新された。修正版は従来どおりで、期間内の新たなパッチや悪用確認はなし。",
+      "reason": "未認証のファイルアップロード経由で任意ファイル書き込み・読み取りに至る可能性があり、秘密情報露出からRCEへ発展し得る。アドバイザリに悪用事例の記載はなく、悪用状況は未確認。",
+      "affected": "activestorageが8.0.5.2未満、または8.1系で8.1.4.1未満。ImageMagick（mini_magick、load_defaults 6.1以前の既定等）で処理し信頼できないアップロードを受ける場合。7.x系の修正版は不明（未サポート扱い）。",
+      "check": "Gemfile.lockまたはbundle show activestorageでバージョンを確認。config.active_storage.variant_processorが:mini_magickか、アップロード受付の有無を確認。利用環境への該当は未判定。",
+      "action": "未適用なら8.0.5.2または8.1.4.1へ更新（mini_magick 5.1以上が必要な場合あり）。Diskサービス利用時は露出し得る秘密のローテーションを検討。侵害の公式確認手順はアドバイザリに限定的で、追加の悪用確認は未確認。",
       "verification": "公式確認済み",
       "sources": [
         {
-          "title": "Rails Versions 8.0.5.2 and 8.1.4.1 have been released!",
-          "url": "https://rubyonrails.org/2026/11/4/Rails-8.0.5.2-and-8.1.4.1-have-been-released",
+          "title": "Active Storage GHSA-f3w6-w445-fwh9",
+          "url": "https://github.com/advisories/GHSA-f3w6-w445-fwh9",
           "kind": "公式"
         }
       ]
     },
     {
       "id": "strutil-core-malicious-gem",
-      "title": "悪意のあるRuby gem strutil-coreの報道",
+      "title": "悪意のあるRuby gem strutil-core",
       "priority": "動向把握",
       "change": "継続",
       "tags": [
-        "Ruby",
-        "gem"
+        "Ruby"
       ],
-      "summary": "strutil-core 1.0.1がインストール時に資格情報窃取等を行うとの分析。短時間で削除されたとされる。期間内の公式追加情報は未確認。",
-      "reason": "開発時の資格情報窃取が報道されているが公式確認なし。悪用は当該gemのインストールが条件。",
-      "affected": "strutil-core 1.0.1をインストールした場合。詳細不明。利用環境への該当は未判定。",
-      "check": "gem list または Gemfile で strutil-core の有無を確認する。",
-      "action": "該当すれば削除し資格情報の扱いを見直す。公式の修正・侵害確認手順は不明。",
-      "verification": "未確認",
+      "summary": "strutil-core 1.0.1はインストール時に資格情報窃取等を行うマルウェアとして2026-11-10にGHSA掲載。最終更新も同日で、期間内の公式追加情報は確認できず。",
+      "reason": "gem install時に多数のクラウド・開発ツール資格情報を読み取り外部へ通信し永続化を試みるとされる。短時間で削除されたとの既報はあるが、期間内の新たな悪用や公式続報は未確認。",
+      "affected": "strutil-core = 1.0.1。パッチ版なし。導入済みかどうかは環境依存で未判定。",
+      "check": "gem listまたはGemfile.lock、インストール履歴でstrutil-coreの有無を確認。",
+      "action": "導入痕跡があれば削除し、関連資格情報の不正利用有無を自環境で調査。公式の追加緩和策は不明。",
+      "verification": "公式確認済み",
       "sources": [
         {
-          "title": "Malicious Ruby Gem Steals 51 Types of Credentials and Plants Backdoors in AI Coding Tools",
-          "url": "https://cybersecuritynews.com/malicious-ruby-gem/",
-          "kind": "参考"
+          "title": "Malicious code in strutil-core GHSA-gv9w-h836-5f8g",
+          "url": "https://github.com/advisories/GHSA-gv9w-h836-5f8g",
+          "kind": "公式"
         }
       ]
     }
   ],
-  "date": "2026-11-13",
-  "generatedAt": "2026-11-13T07:50:48.539Z",
+  "date": "2026-11-14",
+  "generatedAt": "2026-11-14T07:33:12.020Z",
   "model": "grok-4.7",
   "usage": {
-    "inputTokens": 87461,
-    "outputTokens": 8407,
+    "inputTokens": 76515,
+    "outputTokens": 9508,
     "tools": {
       "web_search_calls": 5,
       "x_search_calls": 1,
-      "x_posts_fetched": 9,
+      "x_posts_fetched": 5,
       "x_users_fetched": 0,
       "code_interpreter_calls": 0,
       "file_search_calls": 0,
@@ -70,5 +69,5 @@
       "image_generation_calls": 0
     }
   },
-  "fingerprint": "8da9647f459d2e7b8e0af10e88bf470c300465b34a3779bb7ac9b9343f62cf42"
+  "fingerprint": "503b4b1e1cdc98c41efec7d6484fe0d7f97ced8659e15cbf6c6e2cd1a57a2024"
 }
