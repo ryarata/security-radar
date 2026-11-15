@@ -1,66 +1,72 @@
 {
-  "summary": "指定アカウントの期間内投稿にセキュリティ話題はなく、Rails関連はGHSAデータベース掲載の更新のみで新たな修正版・悪用確認はなし。悪意あるgemにも期間内の追加公式情報は確認できず。",
+  "summary": "期間内の新規確認はPumaの未認証DoS（GHSA-x646-wp7c-h9mg、2026-11-13）。指定アカウントにセキュリティ話題はなく、Rails既知更新の追加事実とstrutil-coreの続報は未確認。",
   "coverage": {
-    "x": "from:k_koyanagi_null since:2026-11-12 のLatestを5件取得。セキュリティ関連はなく日常投稿のみ。全件・返信文脈・非公開は未カバー。",
-    "official": "GitHub Advisory DatabaseのRubyGems一覧と個別GHSA2件を確認。JPCERT/CC・IPA・CISA等の期間内新規重大注意喚起は検索結果になく未確認。個別の全アドバイザリ全文や悪用報告の網羅は未実施。"
+    "x": "from:k_koyanagi_nullのLatest10件（いずれも2026-11-15の非セキュリティ投稿）を検索。セキュリティ話題はなし。取得上限のため期間内のそれ以前は未確認。",
+    "official": "Web検索1回と公式ページ3件（Puma GHSA、RubySec、Railsリリース告知）を確認。期間内のJPCERT/CC・IPA・CISA新規重大注意喚起、strutil-core続報、他エコシステムは未確認。"
   },
   "items": [
     {
-      "id": "Rails-8.0.5.2-8.1.4.1",
-      "title": "Ruby on Rails 8.0.5.2/8.1.4.1のセキュリティ更新",
-      "priority": "利用確認",
-      "change": "更新",
+      "id": "GHSA-x646-wp7c-h9mg",
+      "title": "Pumaが応答読み取り停止でワーカーを占有するDoS",
+      "priority": "今日確認",
+      "change": "新規",
       "tags": [
         "Ruby",
-        "Rails"
+        "Puma"
       ],
-      "summary": "2026-11-04の修正版に含まれるActive Storageの重大問題が、GitHub Advisory Databaseへ2026-11-12に掲載・更新された。修正版は従来どおりで、期間内の新たなパッチや悪用確認はなし。",
-      "reason": "未認証のファイルアップロード経由で任意ファイル書き込み・読み取りに至る可能性があり、秘密情報露出からRCEへ発展し得る。アドバイザリに悪用事例の記載はなく、悪用状況は未確認。",
-      "affected": "activestorageが8.0.5.2未満、または8.1系で8.1.4.1未満。ImageMagick（mini_magick、load_defaults 6.1以前の既定等）で処理し信頼できないアップロードを受ける場合。7.x系の修正版は不明（未サポート扱い）。",
-      "check": "Gemfile.lockまたはbundle show activestorageでバージョンを確認。config.active_storage.variant_processorが:mini_magickか、アップロード受付の有無を確認。利用環境への該当は未判定。",
-      "action": "未適用なら8.0.5.2または8.1.4.1へ更新（mini_magick 5.1以上が必要な場合あり）。Diskサービス利用時は露出し得る秘密のローテーションを検討。侵害の公式確認手順はアドバイザリに限定的で、追加の悪用確認は未確認。",
+      "summary": "未認証クライアントがTLS応答または64KB超のファイル応答の読み取りを止めると、Pumaのワーカースレッドが解放されず、接続を重ねるとサービス停止し得る。",
+      "reason": "認証不要・低帯域で可用性を奪える。公式に悪用確認の記載はなく、悪用状況は未確認。",
+      "affected": "puma 3.9.0以上7.2.2未満、および8.0.0以上8.0.3未満。Puma自身がTLS終端する場合、または64KB超のファイル応答を返す場合。プロキシの応答バッファでファイル側は緩和され得る。該当有無は未判定。",
+      "check": "Gemfile.lock等でpuma版を確認し、ssl_bindや静的ファイル・send_fileの有無を見る。",
+      "action": "7.2.2または8.0.3へ更新。暫定はTLSをプロキシで終端し、静的配信をプロキシ/CDNへ移すかproxy_bufferingを有効化。侵害確認の要否は不明。",
       "verification": "公式確認済み",
       "sources": [
         {
-          "title": "Active Storage GHSA-f3w6-w445-fwh9",
-          "url": "https://github.com/advisories/GHSA-f3w6-w445-fwh9",
+          "title": "Puma GHSA-x646-wp7c-h9mg",
+          "url": "https://github.com/puma/puma/security/advisories/GHSA-x646-wp7c-h9mg",
           "kind": "公式"
+        },
+        {
+          "title": "RubySec GHSA-x646-wp7c-h9mg",
+          "url": "https://rubysec.com/advisories/GHSA-x646-wp7c-h9mg/",
+          "kind": "参考"
         }
       ]
     },
     {
-      "id": "strutil-core-malicious-gem",
-      "title": "悪意のあるRuby gem strutil-core",
-      "priority": "動向把握",
+      "id": "Rails-8.0.5.2-8.1.4.1",
+      "title": "Ruby on Rails 8.0.5.2/8.1.4.1のセキュリティ更新",
+      "priority": "利用確認",
       "change": "継続",
       "tags": [
-        "Ruby"
+        "Ruby",
+        "Rails"
       ],
-      "summary": "strutil-core 1.0.1はインストール時に資格情報窃取等を行うマルウェアとして2026-11-10にGHSA掲載。最終更新も同日で、期間内の公式追加情報は確認できず。",
-      "reason": "gem install時に多数のクラウド・開発ツール資格情報を読み取り外部へ通信し永続化を試みるとされる。短時間で削除されたとの既報はあるが、期間内の新たな悪用や公式続報は未確認。",
-      "affected": "strutil-core = 1.0.1。パッチ版なし。導入済みかどうかは環境依存で未判定。",
-      "check": "gem listまたはGemfile.lock、インストール履歴でstrutil-coreの有無を確認。",
-      "action": "導入痕跡があれば削除し、関連資格情報の不正利用有無を自環境で調査。公式の追加緩和策は不明。",
+      "summary": "2026-11-04公開の8.0.5.2/8.1.4.1がActive Storageの重大な任意ファイル読み書き等を含む21件を修正。期間内の新たな修正版や悪用確認は本調査では未確認。",
+      "reason": "未認証のファイル書き込み等があり得る既知問題。期間内の悪用追加確認はなし。",
+      "affected": "修正前のRails 8.0/8.1。ImageMagick利用のActive Storage等が条件。7.2以前は対象外で未修正。該当有無は未判定。",
+      "check": "bundleやGemfile.lockでrails版とActive Storage・ImageMagick利用を確認する。",
+      "action": "未適用なら8.0.5.2または8.1.4.1へ更新。8.0のセキュリティサポート終了は2026-11-07。追加の暫定策は各GHSA参照。侵害確認要否は不明。",
       "verification": "公式確認済み",
       "sources": [
         {
-          "title": "Malicious code in strutil-core GHSA-gv9w-h836-5f8g",
-          "url": "https://github.com/advisories/GHSA-gv9w-h836-5f8g",
+          "title": "Rails 8.0.5.2 and 8.1.4.1 release",
+          "url": "https://rubyonrails.org/2026/11/4/Rails-8.0.5.2-and-8.1.4.1-have-been-released",
           "kind": "公式"
         }
       ]
     }
   ],
-  "date": "2026-11-14",
-  "generatedAt": "2026-11-14T07:33:12.020Z",
+  "date": "2026-11-15",
+  "generatedAt": "2026-11-15T07:47:14.567Z",
   "model": "grok-4.7",
   "usage": {
-    "inputTokens": 76515,
-    "outputTokens": 9508,
+    "inputTokens": 56448,
+    "outputTokens": 5815,
     "tools": {
-      "web_search_calls": 5,
+      "web_search_calls": 4,
       "x_search_calls": 1,
-      "x_posts_fetched": 5,
+      "x_posts_fetched": 10,
       "x_users_fetched": 0,
       "code_interpreter_calls": 0,
       "file_search_calls": 0,
@@ -69,5 +75,5 @@
       "image_generation_calls": 0
     }
   },
-  "fingerprint": "503b4b1e1cdc98c41efec7d6484fe0d7f97ced8659e15cbf6c6e2cd1a57a2024"
+  "fingerprint": "f20b690e4bee903ecfd093b66c2710283b5463eab2bab86e95ea26ea75347631"
 }

@@ -1,0 +1,79 @@
+{
+  "summary": "期間内の新規確認はPumaの未認証DoS（GHSA-x646-wp7c-h9mg、2026-11-13）。指定アカウントにセキュリティ話題はなく、Rails既知更新の追加事実とstrutil-coreの続報は未確認。",
+  "coverage": {
+    "x": "from:k_koyanagi_nullのLatest10件（いずれも2026-11-15の非セキュリティ投稿）を検索。セキュリティ話題はなし。取得上限のため期間内のそれ以前は未確認。",
+    "official": "Web検索1回と公式ページ3件（Puma GHSA、RubySec、Railsリリース告知）を確認。期間内のJPCERT/CC・IPA・CISA新規重大注意喚起、strutil-core続報、他エコシステムは未確認。"
+  },
+  "items": [
+    {
+      "id": "GHSA-x646-wp7c-h9mg",
+      "title": "Pumaが応答読み取り停止でワーカーを占有するDoS",
+      "priority": "今日確認",
+      "change": "新規",
+      "tags": [
+        "Ruby",
+        "Puma"
+      ],
+      "summary": "未認証クライアントがTLS応答または64KB超のファイル応答の読み取りを止めると、Pumaのワーカースレッドが解放されず、接続を重ねるとサービス停止し得る。",
+      "reason": "認証不要・低帯域で可用性を奪える。公式に悪用確認の記載はなく、悪用状況は未確認。",
+      "affected": "puma 3.9.0以上7.2.2未満、および8.0.0以上8.0.3未満。Puma自身がTLS終端する場合、または64KB超のファイル応答を返す場合。プロキシの応答バッファでファイル側は緩和され得る。該当有無は未判定。",
+      "check": "Gemfile.lock等でpuma版を確認し、ssl_bindや静的ファイル・send_fileの有無を見る。",
+      "action": "7.2.2または8.0.3へ更新。暫定はTLSをプロキシで終端し、静的配信をプロキシ/CDNへ移すかproxy_bufferingを有効化。侵害確認の要否は不明。",
+      "verification": "公式確認済み",
+      "sources": [
+        {
+          "title": "Puma GHSA-x646-wp7c-h9mg",
+          "url": "https://github.com/puma/puma/security/advisories/GHSA-x646-wp7c-h9mg",
+          "kind": "公式"
+        },
+        {
+          "title": "RubySec GHSA-x646-wp7c-h9mg",
+          "url": "https://rubysec.com/advisories/GHSA-x646-wp7c-h9mg/",
+          "kind": "参考"
+        }
+      ]
+    },
+    {
+      "id": "Rails-8.0.5.2-8.1.4.1",
+      "title": "Ruby on Rails 8.0.5.2/8.1.4.1のセキュリティ更新",
+      "priority": "利用確認",
+      "change": "継続",
+      "tags": [
+        "Ruby",
+        "Rails"
+      ],
+      "summary": "2026-11-04公開の8.0.5.2/8.1.4.1がActive Storageの重大な任意ファイル読み書き等を含む21件を修正。期間内の新たな修正版や悪用確認は本調査では未確認。",
+      "reason": "未認証のファイル書き込み等があり得る既知問題。期間内の悪用追加確認はなし。",
+      "affected": "修正前のRails 8.0/8.1。ImageMagick利用のActive Storage等が条件。7.2以前は対象外で未修正。該当有無は未判定。",
+      "check": "bundleやGemfile.lockでrails版とActive Storage・ImageMagick利用を確認する。",
+      "action": "未適用なら8.0.5.2または8.1.4.1へ更新。8.0のセキュリティサポート終了は2026-11-07。追加の暫定策は各GHSA参照。侵害確認要否は不明。",
+      "verification": "公式確認済み",
+      "sources": [
+        {
+          "title": "Rails 8.0.5.2 and 8.1.4.1 release",
+          "url": "https://rubyonrails.org/2026/11/4/Rails-8.0.5.2-and-8.1.4.1-have-been-released",
+          "kind": "公式"
+        }
+      ]
+    }
+  ],
+  "date": "2026-11-15",
+  "generatedAt": "2026-11-15T07:47:14.567Z",
+  "model": "grok-4.7",
+  "usage": {
+    "inputTokens": 56448,
+    "outputTokens": 5815,
+    "tools": {
+      "web_search_calls": 4,
+      "x_search_calls": 1,
+      "x_posts_fetched": 10,
+      "x_users_fetched": 0,
+      "code_interpreter_calls": 0,
+      "file_search_calls": 0,
+      "mcp_calls": 0,
+      "document_search_calls": 0,
+      "image_generation_calls": 0
+    }
+  },
+  "fingerprint": "f20b690e4bee903ecfd093b66c2710283b5463eab2bab86e95ea26ea75347631"
+}
