@@ -1,18 +1,65 @@
 {
-  "summary": "指定期間内に対象技術スタックの新規公式重大注意喚起は確認できず。X指定アカウントに関連話題なし。",
+  "summary": "対象期間の@k_koyanagi_null投稿にセキュリティ話題はなし。CISAがPuppet Enterpriseの悪用確認済み脆弱性をKEVに追加。aiohttpのリソース消費脆弱性がGitHub Advisory Databaseに掲載。",
   "coverage": {
-    "x": "from:k_koyanagi_null since:2026-11-15で最新投稿を検索。セキュリティや対象技術に関する話題は発見されず個人的投稿のみ。他期間・他アカウントは未検索。",
-    "official": "Web検索およびJPCERT/CC注意喚起ページ確認で、2026-11-15以降の新規重大注意喚起は見当たらず（最終更新2026-11-11）。Node.js等の既知リリースは期間外。二次情報にWordPressプラグイン言及あるが公式照合・詳細未確認で深掘りせず。"
+    "x": "from:k_koyanagi_nullの最新投稿を検索。セキュリティ関連は確認できず、事業・日常投稿が中心。全件網羅ではなく期間内の限界あり。",
+    "official": "CISA 2026-11-17アラートとGitHub Advisoryのaiohttpを確認。JPCERT/CC・IPAの当該期間新規重大注意喚起は本検索範囲で未確認。"
   },
-  "items": [],
-  "date": "2026-11-17",
-  "generatedAt": "2026-11-17T09:06:38.216Z",
+  "items": [
+    {
+      "id": "CVE-2026-115731",
+      "title": "Perforce Puppet Enterprise デシリアライゼーション脆弱性",
+      "priority": "今日確認",
+      "change": "新規",
+      "tags": [
+        "OS",
+        "クラウド"
+      ],
+      "summary": "Puppet Enterpriseの信頼できないデータデシリアライゼーション。CISAがアクティブ悪用を根拠にKEV追加。",
+      "reason": "2026-11-17にCISA KEVへ追加され悪用証拠あり。詳細な攻撃条件・外部公開性は本確認範囲で未確認。",
+      "affected": "影響バージョン・認証要否などの条件は不明。利用環境への該当は未判定。",
+      "check": "Puppet Enterpriseの利用有無とバージョンを台帳・設定で確認し、ベンダー情報と照合。",
+      "action": "ベンダー修正の適用を検討。侵害兆候確認の要否は環境次第で不明。CISA期限は米国連邦機関向けであり一般企業の義務ではない。",
+      "verification": "公式確認済み",
+      "sources": [
+        {
+          "title": "CISA Adds One Known Exploited Vulnerability to Catalog",
+          "url": "https://www.cisa.gov/news-events/alerts/2026/11/17/cisa-adds-one-known-exploited-vulnerability-catalog",
+          "kind": "公式"
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-128127",
+      "title": "aiohttp Base64マルチパートによるリソース消費",
+      "priority": "利用確認",
+      "change": "新規",
+      "tags": [
+        "Python",
+        "PyPI"
+      ],
+      "summary": "aiohttp 3.14.3以前でbase64マルチパート読み込みがサイズ制限を超え、メモリ過剰やイベントループ停滞を起こし得る。",
+      "reason": "ネットワーク経由・認証不要の可用性影響。悪用確認情報はなし。GitHub Advisory Database掲載は2026-11-16。",
+      "affected": "aiohttp <=3.14.3でマルチパートを読むハンドラがある場合。利用該当は未判定。",
+      "check": "依存のaiohttpバージョンとマルチパート処理の有無を確認。",
+      "action": "3.14.4へ更新。暫定対策・侵害確認の優先度は不明。",
+      "verification": "公式確認済み",
+      "sources": [
+        {
+          "title": "GHSA-24c4-3p7v-29cm AIOHTTP Base64 multipart parts bypass client_max_size",
+          "url": "https://github.com/advisories/GHSA-24c4-3p7v-29cm",
+          "kind": "公式"
+        }
+      ]
+    }
+  ],
+  "date": "2026-11-18",
+  "generatedAt": "2026-11-18T08:28:31.807Z",
   "model": "grok-4.7",
   "usage": {
-    "inputTokens": 65592,
-    "outputTokens": 4616,
+    "inputTokens": 83080,
+    "outputTokens": 7246,
     "tools": {
-      "web_search_calls": 5,
+      "web_search_calls": 7,
       "x_search_calls": 1,
       "x_posts_fetched": 5,
       "x_users_fetched": 0,
@@ -23,5 +70,5 @@
       "image_generation_calls": 0
     }
   },
-  "fingerprint": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+  "fingerprint": "405b714ef8f1aa272878628b4748e9b19016353fc7019e9045431a188eb73736"
 }
