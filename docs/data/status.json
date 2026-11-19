@@ -1,6 +1,5 @@
 {
-  "attemptedAt": "2026-11-18T08:28:31.807Z",
-  "state": "ok",
-  "message": "2件を整理しました",
-  "lastSuccessAt": "2026-11-18T08:28:31.807Z"
+  "attemptedAt": "2026-11-19T08:41:04.049Z",
+  "state": "error",
+  "message": "xAI API HTTP 429。詳細はxAI Consoleで確認してください"
 }
