@@ -1,67 +1,165 @@
 {
-  "summary": "対象期間の@k_koyanagi_null投稿にセキュリティ話題はなし。CISAがPuppet Enterpriseの悪用確認済み脆弱性をKEVに追加。aiohttpのリソース消費脆弱性がGitHub Advisory Databaseに掲載。",
+  "summary": "2026-11-18公開のNGINX 1.30.7/1.31.9で複数脆弱性が修正。HTTP/2メモリ破壊などmajorを確認。指定Xはnginx言及のみでCVEなし。他スタックの期間内重大告示は限定検索で未確認。前回2件の更新事実は未取得。",
   "coverage": {
-    "x": "from:k_koyanagi_nullの最新投稿を検索。セキュリティ関連は確認できず、事業・日常投稿が中心。全件網羅ではなく期間内の限界あり。",
-    "official": "CISA 2026-11-17アラートとGitHub Advisoryのaiohttpを確認。JPCERT/CC・IPAの当該期間新規重大注意喚起は本検索範囲で未確認。"
+    "x": "from:k_koyanagi_null since:2026-11-17 のLatest 10件を取得。nginxの読み方・一般的サプライチェーン言及はあったがCVEや注意喚起の具体内容はなく、スレッド全文やそれ以前は未取得。",
+    "official": "nginx.org security advisoriesを開き修正版と対象CVEを確認。F5 K000163926の検索結果でCVE-2026-123007の概要を確認。個別F5ページの一部は未取得。JPCERT/CC・IPA・CISAの期間内新規で対象スタック重大告示は特定できず未確認。"
   },
   "items": [
     {
-      "id": "CVE-2026-115731",
-      "title": "Perforce Puppet Enterprise デシリアライゼーション脆弱性",
+      "id": "CVE-2026-123007",
+      "title": "NGINX HTTP/2フロー制御のメモリ破壊",
       "priority": "今日確認",
       "change": "新規",
       "tags": [
-        "OS",
-        "クラウド"
+        "nginx",
+        "Webサーバー",
+        "HTTP/2"
       ],
-      "summary": "Puppet Enterpriseの信頼できないデータデシリアライゼーション。CISAがアクティブ悪用を根拠にKEV追加。",
-      "reason": "2026-11-17にCISA KEVへ追加され悪用証拠あり。詳細な攻撃条件・外部公開性は本確認範囲で未確認。",
-      "affected": "影響バージョン・認証要否などの条件は不明。利用環境への該当は未判定。",
-      "check": "Puppet Enterpriseの利用有無とバージョンを台帳・設定で確認し、ベンダー情報と照合。",
-      "action": "ベンダー修正の適用を検討。侵害兆候確認の要否は環境次第で不明。CISA期限は米国連邦機関向けであり一般企業の義務ではない。",
+      "summary": "HTTP/2利用時、フロー制御ウィンドウ超過でヒープバッファオーバーフロー。ワーカーのsegfault、メモリ破壊、ASLR無効または回避時のコード実行があり得る。",
+      "reason": "認証不要で外部公開のHTTP/2構成に影響し公式severityはmajor。野外悪用やCISA KEV掲載は今回の公式確認範囲では記載なし（未確認）。",
+      "affected": "NGINX Open Source 1.9.5–1.31.8（HTTP/2使用時）。1.30.7+と1.31.9+は非該当。NGINX Plus該当範囲はF5記事。条件の詳細一部は未確認。",
+      "check": "nginx -vと、listen等でhttp2が有効かを確認。環境台帳がないため利用該当は未判定。影響なしとは断定しない。",
+      "action": "1.30.7または1.31.9へ更新。暫定のHTTP/2無効化は公式主推奨ではなく要検討。侵害確認要否は悪用未確認のため不明。",
       "verification": "公式確認済み",
       "sources": [
         {
-          "title": "CISA Adds One Known Exploited Vulnerability to Catalog",
-          "url": "https://www.cisa.gov/news-events/alerts/2026/11/17/cisa-adds-one-known-exploited-vulnerability-catalog",
+          "title": "nginx security advisories",
+          "url": "https://nginx.org/en/security_advisories.html",
+          "kind": "公式"
+        },
+        {
+          "title": "K000163926 NGINX ngx_http_v2_module vulnerability CVE-2026-123007",
+          "url": "https://my.f5.com/manage/s/article/K000163926",
           "kind": "公式"
         }
       ]
     },
     {
-      "id": "CVE-2026-128127",
-      "title": "aiohttp Base64マルチパートによるリソース消費",
-      "priority": "利用確認",
+      "id": "CVE-2026-118899",
+      "title": "NGINX TLS 1.3リクエストボディ読み込みの無限ループ",
+      "priority": "今日確認",
       "change": "新規",
       "tags": [
-        "Python",
-        "PyPI"
+        "nginx",
+        "Webサーバー",
+        "TLS"
       ],
-      "summary": "aiohttp 3.14.3以前でbase64マルチパート読み込みがサイズ制限を超え、メモリ過剰やイベントループ停滞を起こし得る。",
-      "reason": "ネットワーク経由・認証不要の可用性影響。悪用確認情報はなし。GitHub Advisory Database掲載は2026-11-16。",
-      "affected": "aiohttp <=3.14.3でマルチパートを読むハンドラがある場合。利用該当は未判定。",
-      "check": "依存のaiohttpバージョンとマルチパート処理の有無を確認。",
-      "action": "3.14.4へ更新。暫定対策・侵害確認の優先度は不明。",
+      "summary": "TLS 1.3でクライアントリクエストボディ読み込み中に無限ループ。公式severityはmajor。詳細なトリガー条件は個別アドバイザリ未取得のため一部未確認。",
+      "reason": "HTTPSで広く使われ得る処理の停止要因。認証要否・野外悪用は公式記載を今回確認できず未確認。",
+      "affected": "NGINX Open Source 1.13.0–1.31.8。1.30.7+と1.31.9+は非該当。具体的な必須設定は不明。",
+      "check": "バージョンとTLS 1.3有効listenerの有無を確認。該当は未判定。",
+      "action": "1.30.7または1.31.9へ更新。暫定対策は不明。侵害確認要否は不明。",
       "verification": "公式確認済み",
       "sources": [
         {
-          "title": "GHSA-24c4-3p7v-29cm AIOHTTP Base64 multipart parts bypass client_max_size",
-          "url": "https://github.com/advisories/GHSA-24c4-3p7v-29cm",
+          "title": "nginx security advisories",
+          "url": "https://nginx.org/en/security_advisories.html",
+          "kind": "公式"
+        },
+        {
+          "title": "K000163930 NGINX TLSv1.3 vulnerability CVE-2026-118899",
+          "url": "https://my.f5.com/manage/s/article/K000163930",
+          "kind": "公式"
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-113425",
+      "title": "NGINX mail proxyモジュールのuse-after-free",
+      "priority": "利用確認",
+      "change": "新規",
+      "tags": [
+        "nginx",
+        "Webサーバー"
+      ],
+      "summary": "mail proxyモジュールのuse-after-free。公式severityはmajor。メールプロキシ以外への影響は不明。",
+      "reason": "特定構成でのメモリ破壊。通常のHTTPリバースプロキシだけでは該当しない可能性があり、悪用状況は未確認。",
+      "affected": "NGINX Open Source 0.5.33–1.31.8。1.30.7+と1.31.9+は非該当。mail proxy利用が条件とみられるが詳細未確認。",
+      "check": "mail関連設定（proxy、auth_http等）の有無とバージョンを確認。該当は未判定。",
+      "action": "該当するなら1.30.7または1.31.9へ更新。暫定対策は不明。",
+      "verification": "公式確認済み",
+      "sources": [
+        {
+          "title": "nginx security advisories",
+          "url": "https://nginx.org/en/security_advisories.html",
+          "kind": "公式"
+        },
+        {
+          "title": "K000163931 NGINX ngx_mail_proxy_module vulnerability CVE-2026-113425",
+          "url": "https://my.f5.com/manage/s/article/K000163931",
+          "kind": "公式"
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-123633",
+      "title": "NGINX HTTP/2のuse-after-free",
+      "priority": "今日確認",
+      "change": "新規",
+      "tags": [
+        "nginx",
+        "Webサーバー",
+        "HTTP/2"
+      ],
+      "summary": "HTTP/2のuse-after-free。公式severityはmedium。worker_connections逼迫等の条件は二次情報にあり公式詳細は未取得。",
+      "reason": "HTTP/2有効の外部公開サーバでクラッシュやメモリ破壊の可能性。野外悪用は未確認。",
+      "affected": "NGINX Open Source 1.19.7–1.31.8。1.30.7+と1.31.9+は非該当。追加条件は一部未確認。",
+      "check": "バージョンとhttp2有効、worker_connectionsの余裕を確認。該当は未判定。",
+      "action": "1.30.7または1.31.9へ更新。暫定対策は不明。",
+      "verification": "公式確認済み",
+      "sources": [
+        {
+          "title": "nginx security advisories",
+          "url": "https://nginx.org/en/security_advisories.html",
+          "kind": "公式"
+        },
+        {
+          "title": "K000163928 NGINX ngx_http_v2_module vulnerability CVE-2026-123633",
+          "url": "https://my.f5.com/manage/s/article/K000163928",
+          "kind": "公式"
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-121810",
+      "title": "NGINX HTTP/3のuse-after-free",
+      "priority": "利用確認",
+      "change": "新規",
+      "tags": [
+        "nginx",
+        "Webサーバー",
+        "HTTP/3"
+      ],
+      "summary": "HTTP/3モジュールのuse-after-free。公式severityはmedium。HTTP/3無効なら影響しにくいが条件詳細は未確認。",
+      "reason": "HTTP/3を公開している場合のワーカー影響。悪用確認はなく未確認。",
+      "affected": "NGINX Open Source 1.25.0–1.31.8。1.30.7+と1.31.9+は非該当。",
+      "check": "http3/quic設定の有無とバージョンを確認。該当は未判定。",
+      "action": "使用中なら1.30.7または1.31.9へ更新。暫定はHTTP/3無効化の検討（効果は未確認）。",
+      "verification": "公式確認済み",
+      "sources": [
+        {
+          "title": "nginx security advisories",
+          "url": "https://nginx.org/en/security_advisories.html",
+          "kind": "公式"
+        },
+        {
+          "title": "K000164058 Out-of-band Security Notification (November 18, 2026)",
+          "url": "https://my.f5.com/manage/s/article/K000164058",
           "kind": "公式"
         }
       ]
     }
   ],
-  "date": "2026-11-18",
-  "generatedAt": "2026-11-18T08:28:31.807Z",
+  "date": "2026-11-19",
+  "generatedAt": "2026-11-19T10:10:16.541Z",
   "model": "grok-4.7",
   "usage": {
-    "inputTokens": 83080,
-    "outputTokens": 7246,
+    "inputTokens": 115199,
+    "outputTokens": 9466,
     "tools": {
-      "web_search_calls": 7,
+      "web_search_calls": 6,
       "x_search_calls": 1,
-      "x_posts_fetched": 5,
+      "x_posts_fetched": 10,
       "x_users_fetched": 0,
       "code_interpreter_calls": 0,
       "file_search_calls": 0,
@@ -70,5 +168,5 @@
       "image_generation_calls": 0
     }
   },
-  "fingerprint": "405b714ef8f1aa272878628b4748e9b19016353fc7019e9045431a188eb73736"
+  "fingerprint": "67dc7496f22da2ad58514d1b4f5744aef41d043ab8cd8e3dd73720332e9bd889"
 }
