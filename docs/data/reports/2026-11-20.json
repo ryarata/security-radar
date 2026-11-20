@@ -1,0 +1,83 @@
+{
+  "summary": "Xの対象期間投稿は開発スタックの脆弱性ではなく個人情報流出報道への言及が中心。公式確認できたのはRubyの正規表現・文字列ケース変換の複数脆弱性（RCEのPoC認識、修正版公開）。PHPの11月19日セキュリティリリースは二次情報のみで詳細は未確認。前回NGINX項目は本調査で再確認していない。",
+  "coverage": {
+    "x": "from:k_koyanagi_null のLatest検索で直近投稿を確認。期間内にRuby/PHP/npm等のCVE言及はなく、ITmediaの流出報道リンクと決済データ保存へのコメントが中心。投稿全文は転載していない。",
+    "official": "Ruby公式ニュースとGHSA-34m4-m9fh-gqp5を開いて確認。PHPはAWS等の二次情報のみでphp.net本文は未取得。JPCERT/CC・IPA・CISA・NGINX公式の個別ページは未取得。"
+  },
+  "items": [
+    {
+      "id": "RUBY-2026-11-18-regexp-string",
+      "title": "Ruby正規表現と文字列ケース変換の複数脆弱性",
+      "priority": "今日確認",
+      "change": "新規",
+      "tags": [
+        "Ruby",
+        "Rails"
+      ],
+      "summary": "正規表現エンジンと文字列の大文字小文字変換に7件。一部はヒープバッファオーバーフローや二重解放で、細工入力によりRCEとなり得る。公式は一部についてRCEを示すPoCを認識している。",
+      "reason": "公式がアップデートを強く推奨し、RCEのPoCを認識。Webアプリのランタイムに直結し得る。現時点で公式は実攻撃の確認を述べていない。CVEは申請中で未割当。",
+      "affected": "Ruby 3.3.13以前、3.4.0～3.4.12、4.0.0～4.0.9。3.2以前はEOLで修正なし。到達には攻撃者制御の文字列やパターンが必要。Rails等での既定到達可否は公式本文では限定的で未確認。",
+      "check": "ruby -v とコンテナ・アプリサーバのランタイムを確認。該当ブランチなら修正版未満か照合。利用環境への該当は未判定。影響なしとは断定しない。",
+      "action": "3.3.14、3.4.13または4.0.10へ更新してプロセスを再起動。gemやRails更新だけでは不十分。侵害の積極調査要否は公式に明示なし。",
+      "verification": "公式確認済み",
+      "sources": [
+        {
+          "title": "Security advisories: multiple vulnerabilities in Regexp and String case conversion",
+          "url": "https://www.ruby-lang.org/en/news/2026/11/18/multiple-vulnerabilities-in-regexp-and-string/",
+          "kind": "公式"
+        },
+        {
+          "title": "GHSA-34m4-m9fh-gqp5 Heap buffer overflow in case conversion of strings",
+          "url": "https://github.com/ruby/ruby/security/advisories/GHSA-34m4-m9fh-gqp5",
+          "kind": "公式"
+        }
+      ]
+    },
+    {
+      "id": "PHP-2026-11-19-security-release",
+      "title": "PHPセキュリティリリース（緊急を含むとの報道）",
+      "priority": "利用確認",
+      "change": "新規",
+      "tags": [
+        "PHP"
+      ],
+      "summary": "11月19日にサポート中ブランチのセキュリティリリースが出たとの二次情報。一部は特定条件下でリモートからプロセス停止、メモリ参照、コード実行につながり得るとの記述がある。件数やCVEの一致は二次情報間で揺れており未確認。",
+      "reason": "複数サービスが緊急対応したとの報道がある。悪用には既定でない設定や一般的でない構成が必要との記述もある。実攻撃の有無は本調査では未確認。",
+      "affected": "二次情報では8.2.36、8.3.37、8.4.28、8.5.13未満などが対象との記載。8.1以前はEOL。正確な影響バージョンとトリガー条件はphp.net未取得のため未確認。",
+      "check": "php -v とPHP-FPM/CGIの設定を確認し、公式リリースノートと照合。利用該当は未判定。",
+      "action": "サポート中ブランチの最新セキュリティリリースへの更新を検討。暫定緩和と修正版の対応関係は未確認。",
+      "verification": "未確認",
+      "sources": [
+        {
+          "title": "PHP Foundation Security Releases – November 19, 2026",
+          "url": "https://aws.amazon.com/security/security-bulletins/2026-190-aws/",
+          "kind": "参考"
+        },
+        {
+          "title": "PHP「緊急」脆弱性、サービス一時停止の動き再び",
+          "url": "https://www.itmedia.co.jp/news/article/2611/20/2000003357/",
+          "kind": "参考"
+        }
+      ]
+    }
+  ],
+  "date": "2026-11-20",
+  "generatedAt": "2026-11-20T08:26:40.609Z",
+  "model": "grok-4.7",
+  "usage": {
+    "inputTokens": 98941,
+    "outputTokens": 8177,
+    "tools": {
+      "web_search_calls": 6,
+      "x_search_calls": 1,
+      "x_posts_fetched": 10,
+      "x_users_fetched": 0,
+      "code_interpreter_calls": 0,
+      "file_search_calls": 0,
+      "mcp_calls": 0,
+      "document_search_calls": 0,
+      "image_generation_calls": 0
+    }
+  },
+  "fingerprint": "33d18c83df18265a2e4313af1ca48bbeeb2d838a1793c6ec66890320908c434a"
+}

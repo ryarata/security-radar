@@ -1,161 +1,72 @@
 {
-  "summary": "2026-11-18公開のNGINX 1.30.7/1.31.9で複数脆弱性が修正。HTTP/2メモリ破壊などmajorを確認。指定Xはnginx言及のみでCVEなし。他スタックの期間内重大告示は限定検索で未確認。前回2件の更新事実は未取得。",
+  "summary": "Xの対象期間投稿は開発スタックの脆弱性ではなく個人情報流出報道への言及が中心。公式確認できたのはRubyの正規表現・文字列ケース変換の複数脆弱性（RCEのPoC認識、修正版公開）。PHPの11月19日セキュリティリリースは二次情報のみで詳細は未確認。前回NGINX項目は本調査で再確認していない。",
   "coverage": {
-    "x": "from:k_koyanagi_null since:2026-11-17 のLatest 10件を取得。nginxの読み方・一般的サプライチェーン言及はあったがCVEや注意喚起の具体内容はなく、スレッド全文やそれ以前は未取得。",
-    "official": "nginx.org security advisoriesを開き修正版と対象CVEを確認。F5 K000163926の検索結果でCVE-2026-123007の概要を確認。個別F5ページの一部は未取得。JPCERT/CC・IPA・CISAの期間内新規で対象スタック重大告示は特定できず未確認。"
+    "x": "from:k_koyanagi_null のLatest検索で直近投稿を確認。期間内にRuby/PHP/npm等のCVE言及はなく、ITmediaの流出報道リンクと決済データ保存へのコメントが中心。投稿全文は転載していない。",
+    "official": "Ruby公式ニュースとGHSA-34m4-m9fh-gqp5を開いて確認。PHPはAWS等の二次情報のみでphp.net本文は未取得。JPCERT/CC・IPA・CISA・NGINX公式の個別ページは未取得。"
   },
   "items": [
     {
-      "id": "CVE-2026-123007",
-      "title": "NGINX HTTP/2フロー制御のメモリ破壊",
+      "id": "RUBY-2026-11-18-regexp-string",
+      "title": "Ruby正規表現と文字列ケース変換の複数脆弱性",
       "priority": "今日確認",
       "change": "新規",
       "tags": [
-        "nginx",
-        "Webサーバー",
-        "HTTP/2"
+        "Ruby",
+        "Rails"
       ],
-      "summary": "HTTP/2利用時、フロー制御ウィンドウ超過でヒープバッファオーバーフロー。ワーカーのsegfault、メモリ破壊、ASLR無効または回避時のコード実行があり得る。",
-      "reason": "認証不要で外部公開のHTTP/2構成に影響し公式severityはmajor。野外悪用やCISA KEV掲載は今回の公式確認範囲では記載なし（未確認）。",
-      "affected": "NGINX Open Source 1.9.5–1.31.8（HTTP/2使用時）。1.30.7+と1.31.9+は非該当。NGINX Plus該当範囲はF5記事。条件の詳細一部は未確認。",
-      "check": "nginx -vと、listen等でhttp2が有効かを確認。環境台帳がないため利用該当は未判定。影響なしとは断定しない。",
-      "action": "1.30.7または1.31.9へ更新。暫定のHTTP/2無効化は公式主推奨ではなく要検討。侵害確認要否は悪用未確認のため不明。",
+      "summary": "正規表現エンジンと文字列の大文字小文字変換に7件。一部はヒープバッファオーバーフローや二重解放で、細工入力によりRCEとなり得る。公式は一部についてRCEを示すPoCを認識している。",
+      "reason": "公式がアップデートを強く推奨し、RCEのPoCを認識。Webアプリのランタイムに直結し得る。現時点で公式は実攻撃の確認を述べていない。CVEは申請中で未割当。",
+      "affected": "Ruby 3.3.13以前、3.4.0～3.4.12、4.0.0～4.0.9。3.2以前はEOLで修正なし。到達には攻撃者制御の文字列やパターンが必要。Rails等での既定到達可否は公式本文では限定的で未確認。",
+      "check": "ruby -v とコンテナ・アプリサーバのランタイムを確認。該当ブランチなら修正版未満か照合。利用環境への該当は未判定。影響なしとは断定しない。",
+      "action": "3.3.14、3.4.13または4.0.10へ更新してプロセスを再起動。gemやRails更新だけでは不十分。侵害の積極調査要否は公式に明示なし。",
       "verification": "公式確認済み",
       "sources": [
         {
-          "title": "nginx security advisories",
-          "url": "https://nginx.org/en/security_advisories.html",
+          "title": "Security advisories: multiple vulnerabilities in Regexp and String case conversion",
+          "url": "https://www.ruby-lang.org/en/news/2026/11/18/multiple-vulnerabilities-in-regexp-and-string/",
           "kind": "公式"
         },
         {
-          "title": "K000163926 NGINX ngx_http_v2_module vulnerability CVE-2026-123007",
-          "url": "https://my.f5.com/manage/s/article/K000163926",
+          "title": "GHSA-34m4-m9fh-gqp5 Heap buffer overflow in case conversion of strings",
+          "url": "https://github.com/ruby/ruby/security/advisories/GHSA-34m4-m9fh-gqp5",
           "kind": "公式"
         }
       ]
     },
     {
-      "id": "CVE-2026-118899",
-      "title": "NGINX TLS 1.3リクエストボディ読み込みの無限ループ",
-      "priority": "今日確認",
-      "change": "新規",
-      "tags": [
-        "nginx",
-        "Webサーバー",
-        "TLS"
-      ],
-      "summary": "TLS 1.3でクライアントリクエストボディ読み込み中に無限ループ。公式severityはmajor。詳細なトリガー条件は個別アドバイザリ未取得のため一部未確認。",
-      "reason": "HTTPSで広く使われ得る処理の停止要因。認証要否・野外悪用は公式記載を今回確認できず未確認。",
-      "affected": "NGINX Open Source 1.13.0–1.31.8。1.30.7+と1.31.9+は非該当。具体的な必須設定は不明。",
-      "check": "バージョンとTLS 1.3有効listenerの有無を確認。該当は未判定。",
-      "action": "1.30.7または1.31.9へ更新。暫定対策は不明。侵害確認要否は不明。",
-      "verification": "公式確認済み",
-      "sources": [
-        {
-          "title": "nginx security advisories",
-          "url": "https://nginx.org/en/security_advisories.html",
-          "kind": "公式"
-        },
-        {
-          "title": "K000163930 NGINX TLSv1.3 vulnerability CVE-2026-118899",
-          "url": "https://my.f5.com/manage/s/article/K000163930",
-          "kind": "公式"
-        }
-      ]
-    },
-    {
-      "id": "CVE-2026-113425",
-      "title": "NGINX mail proxyモジュールのuse-after-free",
+      "id": "PHP-2026-11-19-security-release",
+      "title": "PHPセキュリティリリース（緊急を含むとの報道）",
       "priority": "利用確認",
       "change": "新規",
       "tags": [
-        "nginx",
-        "Webサーバー"
+        "PHP"
       ],
-      "summary": "mail proxyモジュールのuse-after-free。公式severityはmajor。メールプロキシ以外への影響は不明。",
-      "reason": "特定構成でのメモリ破壊。通常のHTTPリバースプロキシだけでは該当しない可能性があり、悪用状況は未確認。",
-      "affected": "NGINX Open Source 0.5.33–1.31.8。1.30.7+と1.31.9+は非該当。mail proxy利用が条件とみられるが詳細未確認。",
-      "check": "mail関連設定（proxy、auth_http等）の有無とバージョンを確認。該当は未判定。",
-      "action": "該当するなら1.30.7または1.31.9へ更新。暫定対策は不明。",
-      "verification": "公式確認済み",
+      "summary": "11月19日にサポート中ブランチのセキュリティリリースが出たとの二次情報。一部は特定条件下でリモートからプロセス停止、メモリ参照、コード実行につながり得るとの記述がある。件数やCVEの一致は二次情報間で揺れており未確認。",
+      "reason": "複数サービスが緊急対応したとの報道がある。悪用には既定でない設定や一般的でない構成が必要との記述もある。実攻撃の有無は本調査では未確認。",
+      "affected": "二次情報では8.2.36、8.3.37、8.4.28、8.5.13未満などが対象との記載。8.1以前はEOL。正確な影響バージョンとトリガー条件はphp.net未取得のため未確認。",
+      "check": "php -v とPHP-FPM/CGIの設定を確認し、公式リリースノートと照合。利用該当は未判定。",
+      "action": "サポート中ブランチの最新セキュリティリリースへの更新を検討。暫定緩和と修正版の対応関係は未確認。",
+      "verification": "未確認",
       "sources": [
         {
-          "title": "nginx security advisories",
-          "url": "https://nginx.org/en/security_advisories.html",
-          "kind": "公式"
+          "title": "PHP Foundation Security Releases – November 19, 2026",
+          "url": "https://aws.amazon.com/security/security-bulletins/2026-190-aws/",
+          "kind": "参考"
         },
         {
-          "title": "K000163931 NGINX ngx_mail_proxy_module vulnerability CVE-2026-113425",
-          "url": "https://my.f5.com/manage/s/article/K000163931",
-          "kind": "公式"
-        }
-      ]
-    },
-    {
-      "id": "CVE-2026-123633",
-      "title": "NGINX HTTP/2のuse-after-free",
-      "priority": "今日確認",
-      "change": "新規",
-      "tags": [
-        "nginx",
-        "Webサーバー",
-        "HTTP/2"
-      ],
-      "summary": "HTTP/2のuse-after-free。公式severityはmedium。worker_connections逼迫等の条件は二次情報にあり公式詳細は未取得。",
-      "reason": "HTTP/2有効の外部公開サーバでクラッシュやメモリ破壊の可能性。野外悪用は未確認。",
-      "affected": "NGINX Open Source 1.19.7–1.31.8。1.30.7+と1.31.9+は非該当。追加条件は一部未確認。",
-      "check": "バージョンとhttp2有効、worker_connectionsの余裕を確認。該当は未判定。",
-      "action": "1.30.7または1.31.9へ更新。暫定対策は不明。",
-      "verification": "公式確認済み",
-      "sources": [
-        {
-          "title": "nginx security advisories",
-          "url": "https://nginx.org/en/security_advisories.html",
-          "kind": "公式"
-        },
-        {
-          "title": "K000163928 NGINX ngx_http_v2_module vulnerability CVE-2026-123633",
-          "url": "https://my.f5.com/manage/s/article/K000163928",
-          "kind": "公式"
-        }
-      ]
-    },
-    {
-      "id": "CVE-2026-121810",
-      "title": "NGINX HTTP/3のuse-after-free",
-      "priority": "利用確認",
-      "change": "新規",
-      "tags": [
-        "nginx",
-        "Webサーバー",
-        "HTTP/3"
-      ],
-      "summary": "HTTP/3モジュールのuse-after-free。公式severityはmedium。HTTP/3無効なら影響しにくいが条件詳細は未確認。",
-      "reason": "HTTP/3を公開している場合のワーカー影響。悪用確認はなく未確認。",
-      "affected": "NGINX Open Source 1.25.0–1.31.8。1.30.7+と1.31.9+は非該当。",
-      "check": "http3/quic設定の有無とバージョンを確認。該当は未判定。",
-      "action": "使用中なら1.30.7または1.31.9へ更新。暫定はHTTP/3無効化の検討（効果は未確認）。",
-      "verification": "公式確認済み",
-      "sources": [
-        {
-          "title": "nginx security advisories",
-          "url": "https://nginx.org/en/security_advisories.html",
-          "kind": "公式"
-        },
-        {
-          "title": "K000164058 Out-of-band Security Notification (November 18, 2026)",
-          "url": "https://my.f5.com/manage/s/article/K000164058",
-          "kind": "公式"
+          "title": "PHP「緊急」脆弱性、サービス一時停止の動き再び",
+          "url": "https://www.itmedia.co.jp/news/article/2611/20/2000003357/",
+          "kind": "参考"
         }
       ]
     }
   ],
-  "date": "2026-11-19",
-  "generatedAt": "2026-11-19T10:10:16.541Z",
+  "date": "2026-11-20",
+  "generatedAt": "2026-11-20T08:26:40.609Z",
   "model": "grok-4.7",
   "usage": {
-    "inputTokens": 115199,
-    "outputTokens": 9466,
+    "inputTokens": 98941,
+    "outputTokens": 8177,
     "tools": {
       "web_search_calls": 6,
       "x_search_calls": 1,
@@ -168,5 +79,5 @@
       "image_generation_calls": 0
     }
   },
-  "fingerprint": "67dc7496f22da2ad58514d1b4f5744aef41d043ab8cd8e3dd73720332e9bd889"
+  "fingerprint": "33d18c83df18265a2e4313af1ca48bbeeb2d838a1793c6ec66890320908c434a"
 }
