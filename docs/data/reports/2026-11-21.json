@@ -1,0 +1,148 @@
+{
+  "summary": "指定アカウントの最新投稿にセキュリティ話題はなかった。期間内はPHPとNGINXの公式注意喚起の題名を確認したが本文は未読。Rubyは前回どおり継続。プラグインの新規CVEは二次情報のみ。",
+  "coverage": {
+    "x": "from:k_koyanagi_null をLatestで10件検索。返却は2026-11-21の投稿のみで、セキュリティ関連はなし。11月19–20日分は結果に含まれず未確認。",
+    "official": "Web検索1回、ページ参照3件。JPCERT/CC・IPA・Ruby公式・CISA原典の本文は未読。公式URLと題名は第三者一覧（公式RSSの題名転載と記載）と二次記事から取得。"
+  },
+  "items": [
+    {
+      "id": "PHP-2026-11-19-security-release",
+      "title": "PHPの11月注意喚起とCVE-2026-109618/109619",
+      "priority": "今日確認",
+      "change": "更新",
+      "tags": [
+        "PHP"
+      ],
+      "summary": "11月19日にIPAがセキュリティリリースの事前準備、20日にIPAとJPCERT/CCがPHP関連の注意喚起を公表。JPCERT件名はCVE-2026-109618とCVE-2026-109619。同一CVEは11月2日更新のIPA件名にもあり、今回のリリースとの対応は未確認。",
+      "reason": "集約サイトは当該CVEをCVSS 9.8・米CISA悪用確認と表示。公式本文とCISA原典は未読。外部公開され得るPHPのため今日確認。CISA期限は米連邦機関向けで一般企業の義務ではない。",
+      "affected": "対象バージョン・条件は不明。利用環境への該当は未判定。",
+      "check": "稼働中のPHPバージョンを、未読の公式注意喚起にある対象範囲と照合する。前回報道のリリースと上記2件のCVEが同一かも公式本文で確認する。",
+      "action": "公式ページで修正版を確認してから更新。侵害確認の要否は悪用条件が未確認のため不明。",
+      "verification": "未確認",
+      "sources": [
+        {
+          "title": "JPCERT/CC PHP注意喚起（題名）",
+          "url": "https://www.jpcert.or.jp/at/2026/at260033.html",
+          "kind": "公式"
+        },
+        {
+          "title": "IPA PHPの脆弱性対策について（2026年11月）",
+          "url": "https://www.ipa.go.jp/security/security-alert/2026/alert20261120.html",
+          "kind": "公式"
+        },
+        {
+          "title": "IPA PHPセキュリティリリース事前準備",
+          "url": "https://www.ipa.go.jp/security/security-alert/2026/pre-alert20261119.html",
+          "kind": "公式"
+        },
+        {
+          "title": "最新の注意喚起(IPA・JPCERT/CC)",
+          "url": "https://www.medict.co.jp/security-alerts/",
+          "kind": "参考"
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-123007",
+      "title": "NGINXの複数の脆弱性（IPA注意喚起）",
+      "priority": "利用確認",
+      "change": "新規",
+      "tags": [
+        "NGINX",
+        "Webサーバー"
+      ],
+      "summary": "11月19日にIPAがNGINXの複数脆弱性対策を公表。件名にCVE-2026-123007、CVE-2026-123633等。本文は未読。",
+      "reason": "Webサーバーとして外部公開され得る。集約サイトは重要（CVSS 8.1）と表示し、悪用確認の印はない。悪用状況は未確認。",
+      "affected": "影響バージョンと条件は不明。利用環境への該当は未判定。",
+      "check": "利用中のNGINXのバージョンと公開有無を、IPA注意喚起の対象と照合する。",
+      "action": "公式ページで修正版と暫定対策を確認。侵害確認の要否は不明。",
+      "verification": "未確認",
+      "sources": [
+        {
+          "title": "IPA NGINXの複数の脆弱性対策",
+          "url": "https://www.ipa.go.jp/security/security-alert/2026/alert20261119.html",
+          "kind": "公式"
+        },
+        {
+          "title": "最新の注意喚起(IPA・JPCERT/CC)",
+          "url": "https://www.medict.co.jp/security-alerts/",
+          "kind": "参考"
+        }
+      ]
+    },
+    {
+      "id": "RUBY-2026-11-18-regexp-string",
+      "title": "Ruby正規表現と文字列ケース変換の複数脆弱性",
+      "priority": "利用確認",
+      "change": "継続",
+      "tags": [
+        "Ruby"
+      ],
+      "summary": "前回と同じ7件。二次情報では修正版は4.0.10、3.4.13、3.3.14。公式ニュースURLは二次記事内で確認したが本文は未読。新たな悪用確認は取れていない。",
+      "reason": "一部は細工入力でRCEとなり得るとの前回情報と二次報道は一致。実悪用は未確認。CVE割当は二次情報間で矛盾し未確認。",
+      "affected": "二次情報では3.3.13以前、3.4.0～3.4.12、4.0.0～4.0.9。公式本文は未読。利用環境への該当は未判定。",
+      "check": "実行中ランタイムのRubyバージョンを確認する。Gem更新だけではインタープリタ本体が残る可能性あり。",
+      "action": "各ブランチの修正版へ更新し、関連プロセスを再起動。3.2以前の修正提供有無は公式本文未読。侵害確認の要否は不明。",
+      "verification": "未確認",
+      "sources": [
+        {
+          "title": "Ruby公式ニュース（二次記事内のURL）",
+          "url": "https://www.ruby-lang.org/en/news/2026/11/18/multiple-vulnerabilities-in-regexp-and-string/",
+          "kind": "公式"
+        },
+        {
+          "title": "窓の杜（Yahoo!ニュース）",
+          "url": "https://news.yahoo.co.jp/articles/7cbcfe27cc5272a673cbfd90342ff09c7b51eff2",
+          "kind": "参考"
+        },
+        {
+          "title": "eSecurity Planet",
+          "url": "https://www.esecurityplanet.com/cybersecurity/news-ruby-security-update-regex-string-rce/",
+          "kind": "参考"
+        }
+      ]
+    },
+    {
+      "id": "WP-PLUGIN-2026-11-21-UNVERIFIED",
+      "title": "WordPressプラグインの高深刻度CVE（二次一覧）",
+      "priority": "動向把握",
+      "change": "新規",
+      "tags": [
+        "WordPress",
+        "プラグイン"
+      ],
+      "summary": "11月21日の二次CVE一覧に、Restrictions for BuddyPressやWP Import Export Liteなど複数プラグインの高深刻度CVEが並ぶ。開発元・JPCERT/CCの確認はしていない。",
+      "reason": "未認証でのコード実行をうたう記載があるが、出典はCVE集約サイトのみ。悪用状況・修正版は未確認。優先対応の根拠にはしない。",
+      "affected": "二次一覧のバージョン記載はあるが公式未確認。利用環境への該当は未判定。",
+      "check": "導入プラグイン名とバージョンを台帳で洗い、開発元の告知が出るまで断定しない。",
+      "action": "公式アドバイザリの有無を別途確認。修正版・暫定対策は不明。",
+      "verification": "未確認",
+      "sources": [
+        {
+          "title": "CVEs published on 21 Nov 2026 | Resilience Intel",
+          "url": "https://news.resiliencesecurities.com/cve/date/2026-11-21",
+          "kind": "参考"
+        }
+      ]
+    }
+  ],
+  "date": "2026-11-21",
+  "generatedAt": "2026-11-21T08:13:54.515Z",
+  "model": "grok-4.7",
+  "usage": {
+    "inputTokens": 41631,
+    "outputTokens": 11046,
+    "tools": {
+      "web_search_calls": 4,
+      "x_search_calls": 1,
+      "x_posts_fetched": 10,
+      "x_users_fetched": 0,
+      "code_interpreter_calls": 0,
+      "file_search_calls": 0,
+      "mcp_calls": 0,
+      "document_search_calls": 0,
+      "image_generation_calls": 0
+    }
+  },
+  "fingerprint": "5e55072f935d55ca8de1e0a4561f2ca4d7e55a63fab27a5ee873e72fb6ef3e4c"
+}
