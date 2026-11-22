@@ -1,0 +1,116 @@
+{
+  "summary": "対象期間の公式確認はPHPの11月セキュリティリリース（IPA 11月20日）とNGINXの11月18日修正が中心。指定Xアカウントに対象製品の脆弱性告知はなく、RubyとWordPressは今回未検索のため再掲しない。",
+  "coverage": {
+    "x": "from:k_koyanagi_null をLatestで10件検索。期間内はP=NP、契約・法令、タワーレコード不正アクセスの転載などで、対象製品のCVE告知は見当たらない。全文は転載していない。",
+    "official": "IPAのPHP 11月注意喚起本文、php.netのリリース告知、nginx.org newsを開いた。F5のCVE-2026-123007概要とJPCERT一覧の件名は検索結果で確認。JPCERT本文、IPAのNGINX本文、GitHub Advisory本文、Ruby、WordPressは未読。"
+  },
+  "items": [
+    {
+      "id": "PHP-2026-11-19-security-release",
+      "title": "PHPの11月セキュリティリリース（8.2.36等）",
+      "priority": "今日確認",
+      "change": "更新",
+      "tags": [
+        "PHP"
+      ],
+      "summary": "11月19日にPHP 8.2.36、8.3.37、8.4.28、8.5.13がセキュリティリリースとして公開され、11月20日にIPAが対策ページを掲載した。条件付きの任意コード実行、リクエストスマグリング、署名検証回避などが含まれる。10月のPHP2Shellとの個別対応は未確認。",
+      "reason": "外部公開のPHPで、条件次第でコード実行等に至る。事前予告のCriticalは既定外設定または非一般的構成が条件。IPAは全件が既定設定なら無害とは判断しないよう求めている。11月分の悪用は、開いた公式本文では確認できない。",
+      "affected": "確認対象は8.1.34以前の8.1系、8.2.36未満、8.3.37未満、8.4.28未満、8.5.13未満。全脆弱性が全系統に一律で影響するわけではなく、設定・機能・構成による。8.1の修正版は今回の掲載修正版にない。",
+      "check": "php -vまたは配布元のパッケージ版を系統別に確認する。セッション、リクエスト処理、使用拡張と、組み込み製品・ホスティングの提供元案内も照合する。",
+      "action": "各系統を8.2.36、8.3.37、8.4.28、8.5.13へ更新する。更新できない場合は個別アドバイザリの回避策と外部公開の要否を検討する。侵害確認の要否は個別CVE未読のため不明。",
+      "verification": "公式確認済み",
+      "sources": [
+        {
+          "title": "IPA PHPの脆弱性対策について（2026年11月）",
+          "url": "https://www.ipa.go.jp/security/security-alert/2026/alert20261120.html",
+          "kind": "公式"
+        },
+        {
+          "title": "PHP公式ニュース（8.5.13等の告知）",
+          "url": "https://www.php.net/index.php",
+          "kind": "公式"
+        },
+        {
+          "title": "IPA 11月セキュリティリリース事前準備",
+          "url": "https://www.ipa.go.jp/security/security-alert/2026/pre-alert20261119.html",
+          "kind": "公式"
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-123007",
+      "title": "NGINXの複数脆弱性（HTTP/2のCVE-2026-123007等）",
+      "priority": "今日確認",
+      "change": "更新",
+      "tags": [
+        "NGINX",
+        "Webサーバー"
+      ],
+      "summary": "11月18日にnginx 1.30.7と1.31.9が公開され、HTTP/2フロー制御のメモリ破壊（CVE-2026-123007）を含む複数CVEが修正された。JPCERTは11月19日に関連CyberNewsFlashを掲載。IPA本文は今回未読。",
+      "reason": "HTTP/2を受け付けるNGINXで、未認証の到達からワーカーのクラッシュ、メモリ破壊、条件付きのコード実行が公式に説明されている。実環境での悪用確認は、今回開いた公式情報では取れていない。",
+      "affected": "CVE-2026-123007はHTTP/2利用時。OSSは1.9.5～1.30.6および1.31.0～1.31.8が対象で、修正は1.30.7と1.31.9。PlusはF5記載の37系修正版があり、R34～R36は修正なし。他CVEは機能条件が異なる。",
+      "check": "nginx -vと、listenでhttp2が有効か、mail/stream/HTTP/3等の利用有無を確認する。Ingress Controller等は同梱NGINX版を配布元情報で確認する。",
+      "action": "OSSは1.30.7または1.31.9へ更新する。PlusはF5案内の修正ビルドへ移す。HTTP/2無効化は暫定案になり得るが、全CVEの回避にはならない。侵害確認手順は不明。",
+      "verification": "公式確認済み",
+      "sources": [
+        {
+          "title": "nginx news（2026-11-18）",
+          "url": "https://nginx.org/news.html",
+          "kind": "公式"
+        },
+        {
+          "title": "F5 K000163926 CVE-2026-123007",
+          "url": "https://my.f5.com/manage/s/article/K000163926",
+          "kind": "公式"
+        },
+        {
+          "title": "JPCERT/CCからのお知らせ 2026",
+          "url": "https://www.jpcert.or.jp/update/2026.html",
+          "kind": "公式"
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-58115",
+      "title": "認証無効のNode-REDへの悪意あるフロー登録",
+      "priority": "利用確認",
+      "change": "新規",
+      "tags": [
+        "Node.js",
+        "Node-RED"
+      ],
+      "summary": "JPCERT/CCの11月19日お知らせ一覧に、認証を有効にしていないNode-REDへ悪意ある制御フローが登録される問題（CVE-2026-58115）のCyberNewsFlashがある。本文は未読。",
+      "reason": "認証なしで外部から到達できるNode-REDなら、制御フローの不正登録が件名から想定される。悪用状況、影響版、修正版は本文未読のため未確認。",
+      "affected": "不明。件名上は認証を有効にしていないNode-REDが条件。バージョン範囲は不明。",
+      "check": "外部公開のNode-REDで管理画面・APIの認証が無効でないかを確認する。詳細条件はJPCERT本文と開発元情報の未読分を別途確認する。",
+      "action": "不明。少なくとも認証無効の外部公開は避ける。修正版と侵害確認の要否は未確認。",
+      "verification": "未確認",
+      "sources": [
+        {
+          "title": "JPCERT/CCからのお知らせ 2026",
+          "url": "https://www.jpcert.or.jp/update/2026.html",
+          "kind": "公式"
+        }
+      ]
+    }
+  ],
+  "date": "2026-11-22",
+  "generatedAt": "2026-11-22T07:57:01.882Z",
+  "model": "grok-4.7",
+  "usage": {
+    "inputTokens": 89295,
+    "outputTokens": 8498,
+    "tools": {
+      "web_search_calls": 7,
+      "x_search_calls": 1,
+      "x_posts_fetched": 10,
+      "x_users_fetched": 0,
+      "code_interpreter_calls": 0,
+      "file_search_calls": 0,
+      "mcp_calls": 0,
+      "document_search_calls": 0,
+      "image_generation_calls": 0
+    }
+  },
+  "fingerprint": "24d5e0e4637ff3e7c7b3154bb9b6487b7275773afa7fda5d21d037d018393e3b"
+}
