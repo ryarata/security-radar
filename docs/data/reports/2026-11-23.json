@@ -1,0 +1,95 @@
+{
+  "summary": "対象期間（11月21日〜23日）に、指定アカウントのX投稿から新規のセキュリティ話題は見つからず、公式の新規重大注意喚起も今回の範囲では確認できなかった。前回3件は公式の続報を未確認のため継続とする。",
+  "coverage": {
+    "x": "from:k_koyanagi_null のLatestを1回検索し、11月23日の投稿を確認。セキュリティ関連の言及はなく、ホテル・飲食・雑談が中心。それ以前の期間内投稿は検索結果に含まれず、網羅は未確認。",
+    "official": "Web検索1回とページ閲覧は未実施。JPCERT/CC・IPA・CISA・開発元の期間内新規注意喚起本文は未読。CVE一覧は二次情報のみ。公式確認できない事項は未確認。"
+  },
+  "items": [
+    {
+      "id": "PHP-2026-11-19-security-release",
+      "title": "PHPの11月セキュリティリリース（8.2.36等）",
+      "priority": "利用確認",
+      "change": "継続",
+      "tags": [
+        "PHP"
+      ],
+      "summary": "11月19日公開のPHPセキュリティリリースについて、対象期間内の公式続報は今回未確認。10月のPHP2Shellとの個別対応関係も未確認のまま。",
+      "reason": "前回時点で条件付き任意コード実行等が含まれるとされていた。期間内の悪用状況の更新は未確認。",
+      "affected": "前回記載の8.2.36、8.3.37、8.4.28、8.5.13が修正版。影響条件の再確認は未実施。利用環境への該当は未判定。",
+      "check": "稼働中のPHPバージョンと、Web公開・リクエスト処理方式を確認する。該当有無は環境ごとに未判定。",
+      "action": "修正版の適用要否を自環境で確認する。期間内の追加の暫定対策・侵害確認手順は未確認。",
+      "verification": "未確認",
+      "sources": [
+        {
+          "title": "Update: Critical Vulnerabilities in PHP Require Immediate Patching",
+          "url": "https://content.govdelivery.com/accounts/USDHSCISA/bulletins/430518f",
+          "kind": "公式"
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-123007",
+      "title": "NGINXの複数脆弱性（HTTP/2のCVE-2026-123007等）",
+      "priority": "利用確認",
+      "change": "継続",
+      "tags": [
+        "Webサーバー"
+      ],
+      "summary": "11月18日のnginx修正（1.30.7、1.31.9）とJPCERTの11月19日掲載について、対象期間内の公式更新は今回未確認。",
+      "reason": "HTTP/2フロー制御のメモリ破壊を含む複数修正とされていた。期間内の悪用確認は未確認。",
+      "affected": "前回記載の修正対象バージョン。影響条件の本文は未読。利用環境への該当は未判定。",
+      "check": "nginxのバージョンとHTTP/2の有効状態を確認する。該当有無は未判定。",
+      "action": "修正版の適用要否を確認する。期間内の追加対策は未確認。",
+      "verification": "未確認",
+      "sources": [
+        {
+          "title": "CVEs published on 22 Nov 2026 | Resilience Intel",
+          "url": "https://news.resiliencesecurities.com/cve/date/2026-11-22",
+          "kind": "参考"
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-58115",
+      "title": "認証無効のNode-REDへの悪意あるフロー登録",
+      "priority": "利用確認",
+      "change": "継続",
+      "tags": [
+        "JS",
+        "Node"
+      ],
+      "summary": "認証を有効にしていないNode-REDへの悪意ある制御フロー登録（CVE-2026-58115）について、JPCERT本文および期間内の公式更新は未読・未確認。",
+      "reason": "外部公開かつ認証無効が条件とされていた。期間内の悪用状況の公式確認は未実施。",
+      "affected": "認証を有効にしていないNode-RED。影響バージョンは不明。利用環境への該当は未判定。",
+      "check": "Node-REDの公開範囲と認証設定を確認する。該当有無は未判定。",
+      "action": "認証の有効化と修正要否を確認する。侵害確認の具体手順は未確認。",
+      "verification": "未確認",
+      "sources": [
+        {
+          "title": "Attackers exploit critical Node-RED flaw to deploy Linux bot and backdoors (CVE-2026-58115)",
+          "url": "https://www.helpnetsecurity.com/2026/11/03/node-red-cve-2026-58115-exploitation/",
+          "kind": "参考"
+        }
+      ]
+    }
+  ],
+  "date": "2026-11-23",
+  "generatedAt": "2026-11-23T08:56:24.830Z",
+  "model": "grok-4.7",
+  "usage": {
+    "inputTokens": 19449,
+    "outputTokens": 1827,
+    "tools": {
+      "web_search_calls": 1,
+      "x_search_calls": 1,
+      "x_posts_fetched": 10,
+      "x_users_fetched": 0,
+      "code_interpreter_calls": 0,
+      "file_search_calls": 0,
+      "mcp_calls": 0,
+      "document_search_calls": 0,
+      "image_generation_calls": 0
+    }
+  },
+  "fingerprint": "af64351ecf57d05b65a60f908867f1e5fc5c5165342a7220deb876502efdfcab"
+}
