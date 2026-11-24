@@ -1,0 +1,101 @@
+{
+  "summary": "指定アカウントの最新投稿にセキュリティ話題はなく、JPCERT注意喚起・CyberNewsFlash一覧でも11月22日以降の新規・更新は確認できない。前回の3件は期間内続報なしのため継続または関係確認のみ更新とする。新規の重大注意喚起は確認範囲では未確認。",
+  "coverage": {
+    "x": "from:k_koyanagi_null のLatest 10件を検索。取得分は2026-11-24の雑談のみでセキュリティ話題なし。それ以前は未取得。",
+    "official": "Web検索とJPCERTのPHP注意喚起（最終更新11月20日）、注意喚起一覧、CyberNewsFlash一覧（最終更新11月19日）を確認。期間内の新規注意喚起は一覧にない。開発元・CISA・IPA・個別Flash本文の追加確認はしていない。"
+  },
+  "items": [
+    {
+      "id": "PHP-2026-11-19-security-release",
+      "title": "PHPの11月セキュリティリリース（8.2.36等）",
+      "priority": "利用確認",
+      "change": "更新",
+      "tags": [
+        "PHP"
+      ],
+      "summary": "11月19日のPHP 8.5.13／8.4.28／8.3.37／8.2.36は、10月公表分を含む複数のRCE等を修正。JPCERTは11月20日に注意喚起を更新。対象期間内のさらなる公式続報は未確認。",
+      "reason": "既定設定でも影響し得るRCEを含む。JPCERTは新規公表分の実悪用情報を11月20日時点で確認していないと記載。期間内の悪用続報は未確認。",
+      "affected": "11月19日公表分はPHP 8.5.13未満の8.5系、8.4.28未満の8.4系、8.3.37未満の8.3系、8.2.36未満の8.2系。脆弱性により条件は異なり、EOL版も一部影響の可能性。利用環境への該当は未判定。",
+      "check": "php -v等でバージョンを確認し、session.upload_progress.enabledの明示設定も確認する。ディストリビューション提供版は各提供元情報も見る。",
+      "action": "修正済みバージョンへ更新する。困難な場合はPHP Groupの緩和策を確認する。不審なPHPSESSID、multipartリクエスト、ワーカー異常終了の有無も見る。影響なしとは断定できない。",
+      "verification": "公式確認済み",
+      "sources": [
+        {
+          "title": "PHPにおける複数の脆弱性（CVE-2026-109618、CVE-2026-109619）に関する注意喚起",
+          "url": "https://www.jpcert.or.jp/at/2026/at260033.html",
+          "kind": "公式"
+        },
+        {
+          "title": "PHP 8.5.13 Released!",
+          "url": "https://www.php.net/archive/2026.php#2026-11-19-4",
+          "kind": "公式"
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-123007",
+      "title": "NGINXの複数脆弱性（HTTP/2のCVE-2026-123007等）",
+      "priority": "動向把握",
+      "change": "継続",
+      "tags": [
+        "nginx",
+        "Webサーバー"
+      ],
+      "summary": "11月18日の修正とJPCERTの11月19日CyberNewsFlashについて、一覧の最終更新は11月19日。対象期間内の公式更新は確認できない。本文は今回未読。",
+      "reason": "認証不要のリモートコード実行につながり得るとの公開情報があるが、期間内の悪用確認や公式更新は未確認。影響なしとは断定できない。",
+      "affected": "不明（本文未確認）。利用環境への該当は未判定。",
+      "check": "稼働中のnginxバージョンとHTTP/2等の有効設定を、各環境のパッケージ情報と設定ファイルで確認する。",
+      "action": "不明。開発元およびJPCERT Flashの最新記載を個別に確認し、修正版の適用要否を判断する。",
+      "verification": "未確認",
+      "sources": [
+        {
+          "title": "CyberNewsFlash",
+          "url": "https://www.jpcert.or.jp/newsflash/",
+          "kind": "公式"
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-58115",
+      "title": "認証無効のNode-REDへの悪意あるフロー登録",
+      "priority": "動向把握",
+      "change": "継続",
+      "tags": [
+        "Node-RED",
+        "JS"
+      ],
+      "summary": "認証を有効にしていないNode-REDへの悪意ある制御フロー登録について、JPCERTは11月19日にCyberNewsFlashを掲載。一覧上、対象期間内の更新はなく、本文は未読。",
+      "reason": "認証欠如により遠隔からフロー登録され得る。過去の悪用報告はあるが、期間内の公式更新・悪用続報は未確認。影響なしとは断定できない。",
+      "affected": "不明（本文未確認）。認証無効かつ外部到達可能な場合が主な条件とみられるが未確認。利用環境への該当は未判定。",
+      "check": "Node-REDのバージョン、管理画面の認証有無、外部公開の有無を確認する。",
+      "action": "不明。認証の有効化と修正版の要否は、JPCERT Flashおよび開発元情報を個別に確認する。侵害が疑われる場合はフローとプロセスを調査する。",
+      "verification": "未確認",
+      "sources": [
+        {
+          "title": "CyberNewsFlash",
+          "url": "https://www.jpcert.or.jp/newsflash/",
+          "kind": "公式"
+        }
+      ]
+    }
+  ],
+  "date": "2026-11-24",
+  "generatedAt": "2026-11-24T10:50:52.097Z",
+  "model": "grok-4.7",
+  "usage": {
+    "inputTokens": 97771,
+    "outputTokens": 9397,
+    "tools": {
+      "web_search_calls": 5,
+      "x_search_calls": 1,
+      "x_posts_fetched": 10,
+      "x_users_fetched": 0,
+      "code_interpreter_calls": 0,
+      "file_search_calls": 0,
+      "mcp_calls": 0,
+      "document_search_calls": 0,
+      "image_generation_calls": 0
+    }
+  },
+  "fingerprint": "3b7f377f8b2a202d830022a41de05b4ba46c4a2f55c55b2f4c77f194272ca4ee"
+}
