@@ -1,0 +1,172 @@
+{
+  "summary": "期間内に読めた公式一次情報はJPCERT/CC Weekly Report 2026-11-26が中心。Rubyの文字列変換のヒープBOFは開発元が条件下のRCEを示すPoCを確認したと要約され、Drupal coreのCVE-2026-132165は悪用報告ありと記載。11/25付とされるDrupal CVE-2026-136716は二次情報のみで公式未確認。指定Xに対象スタックの一次告知はほぼなく、PHP・vCenter・NGINX・Node-REDの期間内更新は確認できない。",
+  "coverage": {
+    "x": "from:k_koyanagi_null since:2026-11-25 をLatestで10件。11/27の短文・引用・RTが中心で、スレッド全文は未取得。脆弱性らしいのはRealVNC ViewerのCVE-2026-137738のRTのみ。GMO/ロリポやApacheの平文/ハッシュの発言は会話で、公式照合していない。",
+    "official": "Web検索1回、開封はJPCERT Weekly、注意喚起の二次集約（最終確認の記載は2026-11-27 08:00）、日進開発2026-11-26号の3件。ruby-lang、Drupal SA、IPA、CISA、GHSA本文は未読。Weeklyのnginx節は途中まで。11/27日中の追加公表は未確認。"
+  },
+  "items": [
+    {
+      "id": "CVE-2026-132825",
+      "title": "Ruby文字列変換のヒープBOF（関連文書GHSA-34m4-m9fh-gqp5）",
+      "priority": "今日確認",
+      "change": "更新",
+      "tags": [
+        "Ruby",
+        "Rails"
+      ],
+      "summary": "JPCERT/CC Weekly 2026-11-26が、Rubyの複数脆弱性を紹介。文字列の大文字・小文字変換時のヒープバッファオーバーフローについて、開発元が特定条件下でRCEを示すPoCを確認していると要約。修正リリースへの更新で解決するとする。",
+      "reason": "開発元確認のPoCがある点が前回（公式本文未読）からの新事実。広域の悪用観測や、11/25予定とされた公開PoCの実際の公開は未確認。既定のRails/Sinatraから到達するかは、今回読んだJPCERT本文にはなく未確認。",
+      "affected": "JPCERTが示す修正リリースは4.0.10、3.4.13、3.3.14。影響バージョンの範囲は公式本文未読のため不明。CVE番号の本文記載は未確認で、関連文書はGHSA-34m4-m9fh-gqp5。",
+      "check": "ruby -v と、アプリやコンテナイメージに同梱されたRubyを確認し、ruby-langの11/18告知とGHSAを照合する。",
+      "action": "公式の修正リリースへ更新。暫定対策と侵害確認の要否は本文未読のため不明。",
+      "verification": "公式確認済み",
+      "sources": [
+        {
+          "title": "JPCERT/CC Weekly Report 2026-11-26",
+          "url": "https://www.jpcert.or.jp/wr/2026/wr261126.html",
+          "kind": "公式"
+        },
+        {
+          "title": "Ruby multiple vulnerabilities in regexp and string",
+          "url": "https://www.ruby-lang.org/en/news/2026/11/18/multiple-vulnerabilities-in-regexp-and-string/",
+          "kind": "公式"
+        },
+        {
+          "title": "GHSA-34m4-m9fh-gqp5",
+          "url": "https://github.com/ruby/ruby/security/advisories/GHSA-34m4-m9fh-gqp5",
+          "kind": "公式"
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-132165",
+      "title": "Drupal coreの複数脆弱性（悪用報告ありのCVE-2026-132165）",
+      "priority": "今日確認",
+      "change": "新規",
+      "tags": [
+        "PHP",
+        "Drupal"
+      ],
+      "summary": "同じWeeklyがDrupal coreの複数脆弱性を紹介。CVE-2026-132165について、開発者が実際に悪用されたとの報告を受けていると記載。情報源はSA-CORE-2026-017。Weeklyの対象は11/15〜11/21で、11/26は掲載日。",
+      "reason": "開発元経由の悪用報告があり、公開CMSは外部から到達し得る。認証要否や成立条件はSA本文未読のため不明。CISA掲載や一般企業の期限は未確認であり、義務とは扱わない。",
+      "affected": "影響バージョンはSA本文未読のため不明。",
+      "check": "稼働中のDrupal coreの版を確認し、SA-CORE-2026-017でCVEと条件を照合する。",
+      "action": "開発元の修正版へ更新。版番号と侵害確認手順は本文未読のため不明。悪用報告があるため、更新とあわせて不審な変更の有無を確認する余地がある。",
+      "verification": "公式確認済み",
+      "sources": [
+        {
+          "title": "JPCERT/CC Weekly Report 2026-11-26",
+          "url": "https://www.jpcert.or.jp/wr/2026/wr261126.html",
+          "kind": "公式"
+        },
+        {
+          "title": "Drupal SA-CORE-2026-017",
+          "url": "https://www.drupal.org/sa-core-2026-017",
+          "kind": "公式"
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-136716",
+      "title": "Drupal coreの追加脆弱性（CVE-2026-136716、公式未確認）",
+      "priority": "今日確認",
+      "change": "新規",
+      "tags": [
+        "PHP",
+        "Drupal"
+      ],
+      "summary": "二次情報は、Drupalが11/25にSA-CORE-2026-019としてCVE-2026-136716を公表し、一部のインストール状態では11/18の修正後も乗っ取りのおそれが残り、悪用されていると記したとする。公式本文は未読。",
+      "reason": "二次情報上は公開サイトを含む悪用ありで、外部公開と認証前のインストーラーが条件に見える。公式とCISAの確認はできておらず、影響なしとは断定できない。",
+      "affected": "二次情報では10.6.23未満、11.0.0〜11.3.22、11.4.0〜11.4.13。install.phpを外部から届かないように済みのサイトは対象外とされる。いずれも公式未確認。",
+      "check": "公式SAの有無、core版、install.phpが外部から到達するかを確認する。管理画面だけでは分からないとの記載は未確認。",
+      "action": "公式確認後に更新。二次情報が示す修正版は11.4.14、11.3.23、10.6.23で、更新後のupdate.phpとインストーラー保護、ユーザー1の確認を勧める。手順の正確性は未確認。",
+      "verification": "未確認",
+      "sources": [
+        {
+          "title": "日進開発 セキュリティー更新情報 2026-11-26",
+          "url": "https://nissin-development.co.jp/security/2026-11-26.html",
+          "kind": "参考"
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-123890",
+      "title": "VMware vCenterの認証回避（CVE-2026-123890）",
+      "priority": "利用確認",
+      "change": "継続",
+      "tags": [
+        "認証",
+        "クラウド"
+      ],
+      "summary": "前回と同じIPAの2026-11-24注意喚起。二次集約の11/27 08:00時点の一覧にも同日付の題名が残る。期間内の更新版や本文の再読はしていない。",
+      "reason": "前回要約ではネットワーク経由で認証なしに不正アクセスできる類型。今回、悪用の公式確認は追加できていない。集約サイトのCISA表示は原文未確認。",
+      "affected": "前回はvCenter ServerのVMware Directory Service。今回本文未読のため、版と条件は不明。",
+      "check": "vCenterの有無と版を、IPA注意喚起本文と照合する。",
+      "action": "IPA本文の修正版と緩和策に従う。期間内の追加対策と侵害確認の要否は不明。",
+      "verification": "未確認",
+      "sources": [
+        {
+          "title": "IPA VMware製品の脆弱性対策について(CVE-2026-123890)",
+          "url": "https://www.ipa.go.jp/security/security-alert/2026/alert20261124.html",
+          "kind": "公式"
+        },
+        {
+          "title": "最新の注意喚起(IPA・JPCERT/CC) メディクト",
+          "url": "https://www.medict.co.jp/security-alerts/",
+          "kind": "参考"
+        }
+      ]
+    },
+    {
+      "id": "PHP-2026-11-19-security-release",
+      "title": "PHPの11月セキュリティリリース（8.2.36等）",
+      "priority": "利用確認",
+      "change": "継続",
+      "tags": [
+        "PHP"
+      ],
+      "summary": "11/19のPHP 8.2.36、8.3.37、8.4.28、8.5.13と、11/20のIPA・JPCERT注意喚起は二次集約の一覧に残る。開いた範囲では、それより新しい公式注意喚起は見当たらない。本文は未読。",
+      "reason": "前回どおり複数脆弱性で、未更新の公開サーバは外部から到達し得る。期間内の新たな悪用確認や修正版は確認できない。CISA掲載の有無は未確認。",
+      "affected": "修正版は前回および二次情報では上記4本。影響を受ける旧版の範囲は本文未読のため不明。",
+      "check": "php -v と、OS・コンテナイメージ・ホスティングのPHP版を確認する。",
+      "action": "未更新なら公式の修正版へ更新。期間内の追加修正は確認できない。SOAP不具合が未修正との二次記載は未確認。",
+      "verification": "未確認",
+      "sources": [
+        {
+          "title": "JPCERT/CC PHPにおける複数の脆弱性に関する注意喚起",
+          "url": "https://www.jpcert.or.jp/at/2026/at260033.html",
+          "kind": "公式"
+        },
+        {
+          "title": "IPA PHPの脆弱性対策について（2026年11月）",
+          "url": "https://www.ipa.go.jp/security/security-alert/2026/alert20261120.html",
+          "kind": "公式"
+        },
+        {
+          "title": "日進開発 セキュリティー更新情報 2026-11-26",
+          "url": "https://nissin-development.co.jp/security/2026-11-26.html",
+          "kind": "参考"
+        }
+      ]
+    }
+  ],
+  "date": "2026-11-27",
+  "generatedAt": "2026-11-27T09:37:36.007Z",
+  "model": "grok-4.7",
+  "usage": {
+    "inputTokens": 44534,
+    "outputTokens": 13775,
+    "tools": {
+      "web_search_calls": 4,
+      "x_search_calls": 1,
+      "x_posts_fetched": 10,
+      "x_users_fetched": 0,
+      "code_interpreter_calls": 0,
+      "file_search_calls": 0,
+      "mcp_calls": 0,
+      "document_search_calls": 0,
+      "image_generation_calls": 0
+    }
+  },
+  "fingerprint": "6fe5b36480fd96e16fd454071bd1e92f6f1e51a4c136e8f5dedb01f797f1ba23"
+}
