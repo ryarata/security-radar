@@ -1,61 +1,28 @@
 {
-  "summary": "期間内に読めた公式一次情報はJPCERT/CC Weekly Report 2026-11-26が中心。Rubyの文字列変換のヒープBOFは開発元が条件下のRCEを示すPoCを確認したと要約され、Drupal coreのCVE-2026-132165は悪用報告ありと記載。11/25付とされるDrupal CVE-2026-136716は二次情報のみで公式未確認。指定Xに対象スタックの一次告知はほぼなく、PHP・vCenter・NGINX・Node-REDの期間内更新は確認できない。",
+  "summary": "指定アカウントの取得範囲に対象の脆弱性話題はなく、公式は11/26週報の再確認が中心。期間内の新しいJPCERT/IPA注意喚起は一覧上確認できず、前回項目は継続。nginxを週報から補完し、CVE-2026-136716の公式本文は未確認。",
   "coverage": {
-    "x": "from:k_koyanagi_null since:2026-11-25 をLatestで10件。11/27の短文・引用・RTが中心で、スレッド全文は未取得。脆弱性らしいのはRealVNC ViewerのCVE-2026-137738のRTのみ。GMO/ロリポやApacheの平文/ハッシュの発言は会話で、公式照合していない。",
-    "official": "Web検索1回、開封はJPCERT Weekly、注意喚起の二次集約（最終確認の記載は2026-11-27 08:00）、日進開発2026-11-26号の3件。ruby-lang、Drupal SA、IPA、CISA、GHSA本文は未読。Weeklyのnginx節は途中まで。11/27日中の追加公表は未確認。"
+    "x": "from:k_koyanagi_nullをLatestで1回検索し直近10件を取得。いずれも2026-11-28の非セキュリティ投稿。11/26〜11/27分は取得上限のため未確認。",
+    "official": "JPCERT週報2026-11-26本文を開封。IPA重要情報一覧とPHP注意喚起は検索抜粋で確認。開発元本文、VMware注意喚起本文、CISA、GitHub Advisory本文は未読。11/27〜11/28の新規注意喚起は一覧上見当たらない。"
   },
   "items": [
     {
-      "id": "CVE-2026-132825",
-      "title": "Ruby文字列変換のヒープBOF（関連文書GHSA-34m4-m9fh-gqp5）",
-      "priority": "今日確認",
-      "change": "更新",
-      "tags": [
-        "Ruby",
-        "Rails"
-      ],
-      "summary": "JPCERT/CC Weekly 2026-11-26が、Rubyの複数脆弱性を紹介。文字列の大文字・小文字変換時のヒープバッファオーバーフローについて、開発元が特定条件下でRCEを示すPoCを確認していると要約。修正リリースへの更新で解決するとする。",
-      "reason": "開発元確認のPoCがある点が前回（公式本文未読）からの新事実。広域の悪用観測や、11/25予定とされた公開PoCの実際の公開は未確認。既定のRails/Sinatraから到達するかは、今回読んだJPCERT本文にはなく未確認。",
-      "affected": "JPCERTが示す修正リリースは4.0.10、3.4.13、3.3.14。影響バージョンの範囲は公式本文未読のため不明。CVE番号の本文記載は未確認で、関連文書はGHSA-34m4-m9fh-gqp5。",
-      "check": "ruby -v と、アプリやコンテナイメージに同梱されたRubyを確認し、ruby-langの11/18告知とGHSAを照合する。",
-      "action": "公式の修正リリースへ更新。暫定対策と侵害確認の要否は本文未読のため不明。",
-      "verification": "公式確認済み",
-      "sources": [
-        {
-          "title": "JPCERT/CC Weekly Report 2026-11-26",
-          "url": "https://www.jpcert.or.jp/wr/2026/wr261126.html",
-          "kind": "公式"
-        },
-        {
-          "title": "Ruby multiple vulnerabilities in regexp and string",
-          "url": "https://www.ruby-lang.org/en/news/2026/11/18/multiple-vulnerabilities-in-regexp-and-string/",
-          "kind": "公式"
-        },
-        {
-          "title": "GHSA-34m4-m9fh-gqp5",
-          "url": "https://github.com/ruby/ruby/security/advisories/GHSA-34m4-m9fh-gqp5",
-          "kind": "公式"
-        }
-      ]
-    },
-    {
       "id": "CVE-2026-132165",
-      "title": "Drupal coreの複数脆弱性（悪用報告ありのCVE-2026-132165）",
+      "title": "Drupal coreの複数脆弱性（CVE-2026-132165に悪用報告）",
       "priority": "今日確認",
-      "change": "新規",
+      "change": "継続",
       "tags": [
-        "PHP",
-        "Drupal"
+        "Drupal",
+        "PHP"
       ],
-      "summary": "同じWeeklyがDrupal coreの複数脆弱性を紹介。CVE-2026-132165について、開発者が実際に悪用されたとの報告を受けていると記載。情報源はSA-CORE-2026-017。Weeklyの対象は11/15〜11/21で、11/26は掲載日。",
-      "reason": "開発元経由の悪用報告があり、公開CMSは外部から到達し得る。認証要否や成立条件はSA本文未読のため不明。CISA掲載や一般企業の期限は未確認であり、義務とは扱わない。",
-      "affected": "影響バージョンはSA本文未読のため不明。",
-      "check": "稼働中のDrupal coreの版を確認し、SA-CORE-2026-017でCVEと条件を照合する。",
-      "action": "開発元の修正版へ更新。版番号と侵害確認手順は本文未読のため不明。悪用報告があるため、更新とあわせて不審な変更の有無を確認する余地がある。",
+      "summary": "JPCERT週報2026-11-26がDrupal coreの複数脆弱性を紹介。CVE-2026-132165について、開発者が実際に悪用されたとの報告を受けていると記載。情報源はSA-CORE-2026-017。",
+      "reason": "悪用報告が公式要約に残る。週報の対象期間は11/15〜11/21、掲載日は11/26。期間内の新たな悪用事実は未確認。",
+      "affected": "影響バージョンと成立条件は今回の開発元本文未読のため不明。利用有無は未判定。",
+      "check": "Drupal coreのバージョンとSA-CORE-2026-017の対象条件を照合する。",
+      "action": "週報は修正済み版への更新で解決するとする。侵害確認の要否は開発元情報を確認。詳細は不明。",
       "verification": "公式確認済み",
       "sources": [
         {
-          "title": "JPCERT/CC Weekly Report 2026-11-26",
+          "title": "JPCERT/CC WEEKLY REPORT 2026-11-26",
           "url": "https://www.jpcert.or.jp/wr/2026/wr261126.html",
           "kind": "公式"
         },
@@ -67,25 +34,62 @@
       ]
     },
     {
-      "id": "CVE-2026-136716",
-      "title": "Drupal coreの追加脆弱性（CVE-2026-136716、公式未確認）",
-      "priority": "今日確認",
-      "change": "新規",
+      "id": "CVE-2026-132825",
+      "title": "Ruby文字列変換のヒープBOF（関連文書GHSA-34m4-m9fh-gqp5）",
+      "priority": "利用確認",
+      "change": "継続",
       "tags": [
-        "PHP",
-        "Drupal"
+        "Ruby"
       ],
-      "summary": "二次情報は、Drupalが11/25にSA-CORE-2026-019としてCVE-2026-136716を公表し、一部のインストール状態では11/18の修正後も乗っ取りのおそれが残り、悪用されていると記したとする。公式本文は未読。",
-      "reason": "二次情報上は公開サイトを含む悪用ありで、外部公開と認証前のインストーラーが条件に見える。公式とCISAの確認はできておらず、影響なしとは断定できない。",
-      "affected": "二次情報では10.6.23未満、11.0.0〜11.3.22、11.4.0〜11.4.13。install.phpを外部から届かないように済みのサイトは対象外とされる。いずれも公式未確認。",
-      "check": "公式SAの有無、core版、install.phpが外部から到達するかを確認する。管理画面だけでは分からないとの記載は未確認。",
-      "action": "公式確認後に更新。二次情報が示す修正版は11.4.14、11.3.23、10.6.23で、更新後のupdate.phpとインストーラー保護、ユーザー1の確認を勧める。手順の正確性は未確認。",
-      "verification": "未確認",
+      "summary": "同じ週報がRubyの複数脆弱性を紹介。文字列の大文字・小文字変換時のヒープバッファオーバーフローについて、開発元が特定条件下でRCEを示すPoCを確認していると要約。",
+      "reason": "PoC確認が公式要約にある。攻撃活動の確認は今回の範囲では未確認。",
+      "affected": "週報の関連文書は4.0.10、3.4.13、3.3.14のリリース告知。対象条件の詳細は開発元本文未読のため不明。利用有無は未判定。",
+      "check": "ruby -vと、古い単一バイトエンコーディングでの文字列変換の利用有無を確認する。",
+      "action": "修正リリースへ更新してプロセスを再起動する。侵害確認の要否は不明。",
+      "verification": "公式確認済み",
       "sources": [
         {
-          "title": "日進開発 セキュリティー更新情報 2026-11-26",
-          "url": "https://nissin-development.co.jp/security/2026-11-26.html",
-          "kind": "参考"
+          "title": "JPCERT/CC WEEKLY REPORT 2026-11-26",
+          "url": "https://www.jpcert.or.jp/wr/2026/wr261126.html",
+          "kind": "公式"
+        },
+        {
+          "title": "GHSA-34m4-m9fh-gqp5",
+          "url": "https://github.com/ruby/ruby/security/advisories/GHSA-34m4-m9fh-gqp5",
+          "kind": "公式"
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-123007",
+      "title": "nginxの複数脆弱性（CVE-2026-123007など）",
+      "priority": "利用確認",
+      "change": "新規",
+      "tags": [
+        "nginx",
+        "Webサーバー"
+      ],
+      "summary": "週報は、認証されていない遠隔の第三者によるワーカープロセス異常終了や任意コード実行の可能性を要約。影響は機能や設定で異なるとする。",
+      "reason": "外部から到達し得る条件がある。悪用の有無は今回の本文範囲では未確認。IPA注意喚起は11/19付。",
+      "affected": "影響バージョンは今回未読のため不明。設定・機能により条件が異なる。利用有無は未判定。",
+      "check": "nginxのバージョンと、該当機能・設定の有無を開発元情報と照合する。",
+      "action": "修正済み版へ更新する。暫定対策と侵害確認の要否は不明。",
+      "verification": "公式確認済み",
+      "sources": [
+        {
+          "title": "JPCERT/CC WEEKLY REPORT 2026-11-26",
+          "url": "https://www.jpcert.or.jp/wr/2026/wr261126.html",
+          "kind": "公式"
+        },
+        {
+          "title": "JPCERT/CC CyberNewsFlash nginx",
+          "url": "https://www.jpcert.or.jp/newsflash/2026111902.html",
+          "kind": "公式"
+        },
+        {
+          "title": "IPA NGINXの複数の脆弱性対策について",
+          "url": "https://www.ipa.go.jp/security/security-alert/2026/alert20261119.html",
+          "kind": "公式"
         }
       ]
     },
@@ -95,67 +99,57 @@
       "priority": "利用確認",
       "change": "継続",
       "tags": [
-        "認証",
-        "クラウド"
+        "VMware",
+        "認証"
       ],
-      "summary": "前回と同じIPAの2026-11-24注意喚起。二次集約の11/27 08:00時点の一覧にも同日付の題名が残る。期間内の更新版や本文の再読はしていない。",
-      "reason": "前回要約ではネットワーク経由で認証なしに不正アクセスできる類型。今回、悪用の公式確認は追加できていない。集約サイトのCISA表示は原文未確認。",
-      "affected": "前回はvCenter ServerのVMware Directory Service。今回本文未読のため、版と条件は不明。",
-      "check": "vCenterの有無と版を、IPA注意喚起本文と照合する。",
-      "action": "IPA本文の修正版と緩和策に従う。期間内の追加対策と侵害確認の要否は不明。",
+      "summary": "IPAの重要情報一覧に2026-11-24付の同題名が残る。期間内の更新版や本文の再読はしていない。",
+      "reason": "認証回避として前回から継続。悪用状況の更新は本文未読のため未確認。CISA掲載の有無も今回は未確認。",
+      "affected": "影響製品・バージョンは本文未読のため不明。利用有無は未判定。",
+      "check": "vCenter等のバージョンをIPA注意喚起本文と照合する。",
+      "action": "本文未読のため修正版と暫定対策は不明。該当すればベンダー手順で更新を検討。",
       "verification": "未確認",
       "sources": [
         {
-          "title": "IPA VMware製品の脆弱性対策について(CVE-2026-123890)",
-          "url": "https://www.ipa.go.jp/security/security-alert/2026/alert20261124.html",
+          "title": "IPA 重要なセキュリティ情報",
+          "url": "https://www.ipa.go.jp/security/security-alert/index.html",
           "kind": "公式"
         },
         {
-          "title": "最新の注意喚起(IPA・JPCERT/CC) メディクト",
-          "url": "https://www.medict.co.jp/security-alerts/",
-          "kind": "参考"
+          "title": "IPA VMware製品の脆弱性対策について",
+          "url": "https://www.ipa.go.jp/security/security-alert/2026/alert20261124.html",
+          "kind": "公式"
         }
       ]
     },
     {
       "id": "PHP-2026-11-19-security-release",
       "title": "PHPの11月セキュリティリリース（8.2.36等）",
-      "priority": "利用確認",
+      "priority": "動向把握",
       "change": "継続",
       "tags": [
         "PHP"
       ],
-      "summary": "11/19のPHP 8.2.36、8.3.37、8.4.28、8.5.13と、11/20のIPA・JPCERT注意喚起は二次集約の一覧に残る。開いた範囲では、それより新しい公式注意喚起は見当たらない。本文は未読。",
-      "reason": "前回どおり複数脆弱性で、未更新の公開サーバは外部から到達し得る。期間内の新たな悪用確認や修正版は確認できない。CISA掲載の有無は未確認。",
-      "affected": "修正版は前回および二次情報では上記4本。影響を受ける旧版の範囲は本文未読のため不明。",
-      "check": "php -v と、OS・コンテナイメージ・ホスティングのPHP版を確認する。",
-      "action": "未更新なら公式の修正版へ更新。期間内の追加修正は確認できない。SOAP不具合が未修正との二次記載は未確認。",
-      "verification": "未確認",
+      "summary": "IPA注意喚起は公開日2026-11-20。検索抜粋では8.2.36、8.3.37、8.4.28、8.5.13が修正版。それより新しい公式注意喚起は一覧上見当たらない。",
+      "reason": "対象期間の新事実は確認できない。個別CVEの悪用状況は今回未確認。",
+      "affected": "抜粋では8.2.36未満の8.2系、8.3.37未満の8.3系、8.4.28未満の8.4系などが対象。全条件は不明。利用有無は未判定。",
+      "check": "php -vと、利用系統が修正版未満かを確認する。",
+      "action": "利用系統の修正版へ更新する。侵害確認の要否は不明。",
+      "verification": "公式確認済み",
       "sources": [
-        {
-          "title": "JPCERT/CC PHPにおける複数の脆弱性に関する注意喚起",
-          "url": "https://www.jpcert.or.jp/at/2026/at260033.html",
-          "kind": "公式"
-        },
         {
           "title": "IPA PHPの脆弱性対策について（2026年11月）",
           "url": "https://www.ipa.go.jp/security/security-alert/2026/alert20261120.html",
           "kind": "公式"
-        },
-        {
-          "title": "日進開発 セキュリティー更新情報 2026-11-26",
-          "url": "https://nissin-development.co.jp/security/2026-11-26.html",
-          "kind": "参考"
         }
       ]
     }
   ],
-  "date": "2026-11-27",
-  "generatedAt": "2026-11-27T09:37:36.007Z",
+  "date": "2026-11-28",
+  "generatedAt": "2026-11-28T08:52:18.307Z",
   "model": "grok-4.7",
   "usage": {
-    "inputTokens": 44534,
-    "outputTokens": 13775,
+    "inputTokens": 47390,
+    "outputTokens": 6909,
     "tools": {
       "web_search_calls": 4,
       "x_search_calls": 1,
@@ -168,5 +162,5 @@
       "image_generation_calls": 0
     }
   },
-  "fingerprint": "6fe5b36480fd96e16fd454071bd1e92f6f1e51a4c136e8f5dedb01f797f1ba23"
+  "fingerprint": "5524dc9d0cfb82379f06e6565312a2b9de7ee44fa61e8f65b00ab07999d0d0f5"
 }
